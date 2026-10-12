@@ -40,7 +40,6 @@ def transform(
 
     df = data.copy()
 
-    # Validate the observed treatment labels.
     df["offer"] = df["offer"].astype(str).str.strip()
 
     known = {"No Offer", "Discount", "Buy One Get One"}
@@ -51,7 +50,6 @@ def transform(
             f"Unexpected offer labels: {sorted(unexpected)}"
         )
 
-    # Select one treatment group and the control group.
     if arm == "discount":
         treated_label = "Discount"
     elif arm == "bogo":
@@ -62,12 +60,10 @@ def transform(
     keep = df["offer"].isin(["No Offer", treated_label])
     df = df.loc[keep].copy()
 
-    # The treatment indicator: 1 = selected offer, 0 = no offer.
     df["treatment"] = (
         df["offer"] == treated_label
     ).astype(int)
 
-    # Binary outcome: 1 = conversion, 0 = no conversion.
     df["outcome"] = pd.to_numeric(
         df["conversion"], errors="raise"
     )
@@ -75,7 +71,6 @@ def transform(
     if not df["outcome"].isin([0, 1]).all():
         raise ValueError("conversion must contain only 0 and 1")
 
-    # Features must exclude treatment and outcome columns.
     feature_cols = [
         "recency",
         "history",
@@ -88,14 +83,12 @@ def transform(
 
     X = df[feature_cols].rename(columns=RENAME)
 
-    # Encode categorical features for ML models.
     X = pd.get_dummies(
         X,
         columns=["area_type", "purchase_channel"],
         dtype=int,
     )
 
-    # Handle missing and infinite numeric values.
     X = X.replace([float("inf"), float("-inf")], float("nan"))
 
     for col in X.columns:
