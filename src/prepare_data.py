@@ -1,3 +1,4 @@
+
 import argparse
 from pathlib import Path
 
@@ -42,8 +43,11 @@ def transform(raw: pd.DataFrame, treat: str = None, control: str = None,
     X = raw[NUMERIC_FEATURES + CATEGORICAL].copy()
     X = pd.get_dummies(X, columns=CATEGORICAL, dtype=int)
 
+    ids = raw["customer_id"] if "customer_id" in raw.columns else pd.Series(raw.index + 1, index=raw.index)
+    if ids.duplicated().any():
+        raise ValueError("customer_id in the raw file is not unique.")
     df = X[keep].reset_index(drop=True).copy()
-    df.insert(0, "customer_id", range(1, len(df) + 1))
+    df.insert(0, "customer_id", ids[keep].to_numpy())
     df["discount"] = (offers[keep] == treat_label).astype(int).to_numpy()
     df["revenue"] = raw.loc[keep, "conversion"].to_numpy(float) * value_per_conversion
     return df
