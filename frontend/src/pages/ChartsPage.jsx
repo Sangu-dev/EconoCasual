@@ -19,6 +19,8 @@ export default function ChartsPage() {
     setFilterSegment,
     filterMinLoyalty,
     setFilterMinLoyalty,
+    searchQuery,
+    setSearchQuery,
     loadPipelineMetrics,
     setActiveTab
   } = useData();
@@ -33,6 +35,12 @@ export default function ChartsPage() {
       if (row.loyalty_score !== undefined && Number(row.loyalty_score) < filterMinLoyalty) {
         return false;
       }
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchesId = String(row.customer_id).toLowerCase().includes(q);
+        const matchesSeg = String(row.segment || '').toLowerCase().includes(q);
+        if (!matchesId && !matchesSeg) return false;
+      }
       if (filterSegment === 'all') return true;
       const ite = Number(row.ite);
       if (filterSegment === 'Persuadables') return ite > 10;
@@ -41,7 +49,7 @@ export default function ChartsPage() {
       if (filterSegment === 'Sleeping Dogs') return ite < 0;
       return true;
     });
-  }, [iteScores, filterSegment, filterMinLoyalty]);
+  }, [iteScores, filterSegment, filterMinLoyalty, searchQuery]);
 
   // Compute key stats for Reference 1 model header
   const headerStats = useMemo(() => {
@@ -253,7 +261,21 @@ export default function ChartsPage() {
             />
           </div>
 
-          {(filterSegment !== 'all' || filterMinLoyalty > 0) && (
+          {searchQuery && (
+            <span className="status-badge status-badge-blue" style={{ fontSize: '0.72rem', padding: '1px 8px' }}>
+              <span>Search: "{searchQuery}"</span>
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                style={{ border: 'none', background: 'transparent', cursor: 'pointer', marginLeft: 4, padding: 0, color: 'inherit' }}
+                title="Clear search filter"
+              >
+                ✕
+              </button>
+            </span>
+          )}
+
+          {(filterSegment !== 'all' || filterMinLoyalty > 0 || searchQuery) && (
             <button
               type="button"
               className="btn-pill btn-pill-secondary"
@@ -261,6 +283,7 @@ export default function ChartsPage() {
               onClick={() => {
                 setFilterSegment('all');
                 setFilterMinLoyalty(0);
+                setSearchQuery('');
               }}
             >
               Reset

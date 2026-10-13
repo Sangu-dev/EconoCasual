@@ -16,7 +16,9 @@ export default function AllocationPage() {
     strategyData, 
     budget, 
     setBudget, 
-    isLoading 
+    isLoading,
+    searchQuery,
+    setSearchQuery
   } = useData();
 
   const [tableSearch, setTableSearch] = useState('');
@@ -67,16 +69,19 @@ export default function AllocationPage() {
   }, [allocationData, budget]);
 
   // Filter and paginate allocation table
+  const effectiveQuery = (tableSearch || searchQuery || '').trim().toLowerCase();
+
   const filteredRows = useMemo(() => {
     if (!allocationData || allocationData.length === 0) return [];
 
     return allocationData.filter((row) => {
-      const matchSearch = tableSearch.trim() === '' || 
-        String(row.customer_id).toLowerCase().includes(tableSearch.toLowerCase().trim());
+      const matchSearch = effectiveQuery === '' || 
+        String(row.customer_id).toLowerCase().includes(effectiveQuery) ||
+        String(row.segment || '').toLowerCase().includes(effectiveQuery);
       const matchSegment = tableSegment === 'all' || row.segment === tableSegment;
       return matchSearch && matchSegment;
     });
-  }, [allocationData, tableSearch, tableSegment]);
+  }, [allocationData, effectiveQuery, tableSegment]);
 
   const totalPages = Math.ceil(filteredRows.length / rowsPerPage) || 1;
   const paginatedRows = useMemo(() => {
@@ -200,10 +205,11 @@ export default function AllocationPage() {
               <Search size={13} style={{ position: 'absolute', left: 10, top: 9, color: 'var(--text-tertiary)' }} />
               <input
                 type="text"
-                placeholder="Search Customer ID..."
-                value={tableSearch}
+                placeholder="Search Customer ID or Segment..."
+                value={tableSearch || searchQuery}
                 onChange={(e) => {
                   setTableSearch(e.target.value);
+                  setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
                 style={{
@@ -214,7 +220,7 @@ export default function AllocationPage() {
                   color: 'var(--text-primary)',
                   fontSize: '0.78rem',
                   outline: 'none',
-                  width: 170
+                  width: 190
                 }}
               />
             </div>

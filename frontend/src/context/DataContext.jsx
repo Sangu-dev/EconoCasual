@@ -19,9 +19,10 @@ export function DataProvider({ children }) {
   const [strategyData, setStrategyData] = useState([]);
   const [budget, setBudget] = useState(25000);
   
-  // Filtering and interaction state
+  // Filtering, search and interaction state
   const [filterSegment, setFilterSegment] = useState('all');
   const [filterMinLoyalty, setFilterMinLoyalty] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // System & API status
   const [isLoading, setIsLoading] = useState(false);
@@ -255,6 +256,8 @@ export function DataProvider({ children }) {
     setFilterSegment,
     filterMinLoyalty,
     setFilterMinLoyalty,
+    searchQuery,
+    setSearchQuery,
     isLoading,
     apiStatus,
     activeTab,
