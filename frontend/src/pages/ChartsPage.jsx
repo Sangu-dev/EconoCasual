@@ -1,158 +1,199 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useData } from '../context/DataContext';
-import { LineChart, BarChart3, ScatterChart, Info, Database, Layers } from 'lucide-react';
+import UpliftChart from '../charts/UpliftChart';
+import IteHistogram from '../charts/IteHistogram';
+import IteScatterPlot from '../charts/IteScatterPlot';
+import { 
+  LineChart, 
+  Filter, 
+  Database, 
+  RefreshCw,
+  Info
+} from 'lucide-react';
 
 export default function ChartsPage() {
-  const { dataset, summary, iteScores, setActiveTab } = useData();
+  const { 
+    summary, 
+    iteScores, 
+    upliftData, 
+    isLoading, 
+    apiStatus,
+    filterSegment,
+    setFilterSegment,
+    filterMinLoyalty,
+    setFilterMinLoyalty,
+    loadPipelineMetrics,
+    setActiveTab
+  } = useData();
+
+  // Filter ITE records in real-time based on active filters
+  const filteredIteScores = useMemo(() => {
+    if (!iteScores || iteScores.length === 0) return [];
+
+    return iteScores.filter((row) => {
+      // 1. Loyalty filter
+      if (row.loyalty_score !== undefined && Number(row.loyalty_score) < filterMinLoyalty) {
+        return false;
+      }
+
+      // 2. Segment filter
+      if (filterSegment === 'all') return true;
+      const ite = Number(row.ite);
+      if (filterSegment === 'Persuadables') return ite > 10;
+      if (filterSegment === 'High-Value Loyal') return ite > 5 && ite <= 10;
+      if (filterSegment === 'Sure Things') return ite >= 0 && ite <= 5;
+      if (filterSegment === 'Sleeping Dogs') return ite < 0;
+      return true;
+    });
+  }, [iteScores, filterSegment, filterMinLoyalty]);
 
   return (
     <div className="animate-fade-in">
+      {/* Page Header */}
       <div className="page-header">
         <div>
           <h1 className="page-title">
             <LineChart className="text-primary" size={32} />
-            Causal Uplift & ITE Visualization Suite
+            Causal Model Evaluation & ITE Analytics Suite
           </h1>
           <p className="page-desc">
-            Visualizing the Individual Treatment Effect (ITE) and cumulative incremental gain curves (Uplift & Qini).
-            Scheduled for Stage 2 (17–23 Oct) integration with Plotly.js.
+            Evaluate Double Machine Learning (DML) policy uplift against theoretical Oracle benchmarks,
+            inspect treatment effect heterogeneity, and explore customer feature responsiveness with GPU-accelerated WebGL.
           </p>
         </div>
 
-        <div className="status-pill">
-          <span className="status-indicator-dot" />
-          <span>Stage 2 Staging Area (Plotly Suite)</span>
+        {/* Status and Action Buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <div className="status-pill" style={{ borderColor: apiStatus === 'online' ? 'var(--emerald-border)' : 'var(--border-accent)', color: apiStatus === 'online' ? '#6ee7b7' : 'var(--primary-light)' }}>
+            <span className="status-indicator-dot" />
+            <span>{apiStatus === 'online' ? 'FastAPI Connected' : 'Offline Mock Data Contract'}</span>
+          </div>
+
+          <button
+            className="btn btn-secondary"
+            onClick={loadPipelineMetrics}
+            disabled={isLoading}
+            title="Refresh metrics from API or data files"
+          >
+            <RefreshCw size={15} className={isLoading ? 'animate-spin' : ''} />
+            Sync Data
+          </button>
         </div>
       </div>
 
-      {/* Dataset Status Banner */}
+      {/* Dataset State Banner */}
       {!summary?.isValid ? (
-        <div className="alert-banner alert-info" style={{ marginBottom: '1.75rem' }}>
-          <Info size={24} style={{ flexShrink: 0 }} />
-          <div>
-            <div className="alert-heading">Notice: Observing Default Pipeline State</div>
+        <div className="alert-banner alert-info" style={{ marginBottom: '1.5rem' }}>
+          <Info size={22} style={{ flexShrink: 0 }} />
+          <div style={{ flex: 1 }}>
+            <div className="alert-heading">Notice: Visualizing Reference Pipeline Model</div>
             <div className="alert-body">
-              No verified dataset is currently active. You can still inspect mock ITE state loaded across pages via 
-              <code>DataContext</code>, or return to Upload to load <code>sample_retail.csv</code>.
+              Displaying benchmark results from <code>uplift_curve.csv</code> and <code>mock_ite.json</code> (Role D handoff). 
+              You can upload your own raw customer data on the Ingestion page to validate new cohorts.
             </div>
-            <button 
-              className="btn btn-secondary" 
-              style={{ marginTop: '0.75rem', padding: '0.4rem 0.85rem', fontSize: '0.8rem' }}
-              onClick={() => setActiveTab('upload')}
-            >
-              ← Go to CSV Ingestion
-            </button>
           </div>
+          <button 
+            className="btn btn-secondary" 
+            style={{ padding: '0.4rem 0.85rem', fontSize: '0.8rem' }}
+            onClick={() => setActiveTab('upload')}
+          >
+            Upload Custom Data →
+          </button>
         </div>
       ) : (
-        <div className="alert-banner alert-success" style={{ marginBottom: '1.75rem' }}>
-          <Database size={24} style={{ flexShrink: 0 }} />
-          <div>
-            <div className="alert-heading">Dataset Synchronized via Shared DataContext</div>
+        <div className="alert-banner alert-success" style={{ marginBottom: '1.5rem' }}>
+          <Database size={22} style={{ flexShrink: 0 }} />
+          <div style={{ flex: 1 }}>
+            <div className="alert-heading">Active Ingestion Context Synchronized</div>
             <div className="alert-body">
-              Active dataset contains <strong>{summary.totalRows.toLocaleString()}</strong> customer records ready for 
-              DML inference. {iteScores.length} mock ITE scores loaded for cross-page development.
+              Verified dataset containing <strong>{summary.totalRows.toLocaleString()} customers</strong> is synchronized. 
+              {iteScores.length.toLocaleString()} ITE predictions loaded for causal analysis.
             </div>
           </div>
         </div>
       )}
 
-      {/* Cross-page Shared State Verification Card (Task T4) */}
-      <div className="card-panel" style={{ marginBottom: '1.75rem' }}>
-        <div className="card-header-row">
-          <h3 className="card-heading">
-            <Layers size={20} color="var(--primary-light)" />
-            Task T4: Shared Application State Verification (DataContext)
-          </h3>
-          <span className="badge-role">React Context • Role D Mock Contract</span>
-        </div>
-        <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-          This view verifies that customer features and ITE predictions are accessible globally across views 
-          from <code>mock_ite.json</code> (provided under inbound handoff contract from Role D).
-        </p>
+      {/* Interactive Linked Filter Bar (Fulfills Stage 3 & Role D integration) */}
+      <div className="card-panel" style={{ marginBottom: '1.75rem', padding: '1rem 1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.9rem' }}>
+            <Filter size={18} color="var(--primary-light)" />
+            <span>Interactive Cohort Filters</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 400 }}>
+              (Active Cohort: {filteredIteScores.length.toLocaleString()} / {iteScores.length.toLocaleString()})
+            </span>
+          </div>
 
-        <div className="kpi-grid">
-          <div className="kpi-card">
-            <div className="kpi-label">Mock ITE Records Loaded</div>
-            <div className="kpi-value">{iteScores.length}</div>
-            <div className="kpi-subtext">From /mock_ite.json</div>
-          </div>
-          <div className="kpi-card">
-            <div className="kpi-label">Estimated Persuadables (ITE &gt; $10)</div>
-            <div className="kpi-value">
-              {iteScores.filter((r) => r.ite > 10).length}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+            {/* Segment Selector */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <label htmlFor="segment-filter" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                Target Segment:
+              </label>
+              <select
+                id="segment-filter"
+                value={filterSegment}
+                onChange={(e) => setFilterSegment(e.target.value)}
+                style={{
+                  padding: '0.35rem 0.75rem',
+                  background: 'var(--bg-secondary)',
+                  color: 'var(--text-primary)',
+                  border: '1px solid var(--border-medium)',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '0.8rem'
+                }}
+              >
+                <option value="all">All Segments</option>
+                <option value="Persuadables">Persuadables (ITE &gt; $10)</option>
+                <option value="High-Value Loyal">High-Value Loyal ($5 - $10)</option>
+                <option value="Sure Things">Sure Things ($0 - $5)</option>
+                <option value="Sleeping Dogs">Sleeping Dogs (ITE &lt; 0)</option>
+              </select>
             </div>
-            <div className="kpi-subtext">High uplift segment to target</div>
-          </div>
-          <div className="kpi-card">
-            <div className="kpi-label">Sure Things / Neutrals (0 ≤ ITE ≤ 10)</div>
-            <div className="kpi-value">
-              {iteScores.filter((r) => r.ite >= 0 && r.ite <= 10).length}
+
+            {/* Min Loyalty Slider */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <label htmlFor="loyalty-slider" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                Min Loyalty: <strong style={{ color: 'var(--cyan)' }}>{filterMinLoyalty}</strong>
+              </label>
+              <input
+                id="loyalty-slider"
+                type="range"
+                min="0"
+                max="8"
+                step="0.5"
+                value={filterMinLoyalty}
+                onChange={(e) => setFilterMinLoyalty(Number(e.target.value))}
+                style={{ width: 100, accentColor: 'var(--primary)' }}
+              />
             </div>
-            <div className="kpi-subtext">Do not waste marketing budget</div>
-          </div>
-          <div className="kpi-card">
-            <div className="kpi-label">Sleeping Dogs (ITE &lt; 0)</div>
-            <div className="kpi-value">
-              {iteScores.filter((r) => r.ite < 0).length}
-            </div>
-            <div className="kpi-subtext">Negative response to discounts</div>
+
+            {(filterSegment !== 'all' || filterMinLoyalty > 0) && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                style={{ padding: '0.25rem 0.65rem', fontSize: '0.75rem' }}
+                onClick={() => {
+                  setFilterSegment('all');
+                  setFilterMinLoyalty(0);
+                }}
+              >
+                Clear Filters
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Stage 2 Roadmap Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-        <div className="card-panel">
-          <div className="card-header-row">
-            <h3 className="card-heading">
-              <LineChart size={18} color="var(--cyan)" />
-              Uplift & Qini Curves
-            </h3>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Target: 18 Oct</span>
-          </div>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-            Plots Model Gain (DML ranking) vs Oracle Gain (true effect) vs Random baseline. Evaluates Area Under Uplift Curve (AUUC).
-          </p>
-          <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(8, 12, 20, 0.4)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Component: <code>frontend/src/charts/UpliftChart.jsx</code><br/>
-            Contract: <code>fraction_targeted, model_gain, oracle_gain, random_gain</code>
-          </div>
-        </div>
+      {/* Chart Section 1: Uplift & Qini Curves */}
+      <div style={{ marginBottom: '1.75rem' }}>
+        <UpliftChart upliftData={upliftData} isLoading={isLoading} />
+      </div>
 
-        <div className="card-panel">
-          <div className="card-header-row">
-            <h3 className="card-heading">
-              <BarChart3 size={18} color="var(--primary-light)" />
-              ITE Score Distribution
-            </h3>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Target: 19 Oct</span>
-          </div>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-            Histogram illustrating treatment effect heterogeneity across customers. Proves that uniform blanket discounting is inefficient.
-          </p>
-          <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(8, 12, 20, 0.4)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Component: <code>frontend/src/charts/IteHistogram.jsx</code><br/>
-            Metric: $\Delta \text{Revenue} = Y(1) - Y(0)$
-          </div>
-        </div>
-
-        <div className="card-panel">
-          <div className="card-header-row">
-            <h3 className="card-heading">
-              <ScatterChart size={18} color="var(--emerald)" />
-              WebGL Feature Scatter Plots
-            </h3>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Target: 21 Oct</span>
-          </div>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-            Interactive scatter plots connecting ITE scores to customer loyalty and order values with 60 FPS performance using <code>scattergl</code>.
-          </p>
-          <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(8, 12, 20, 0.4)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Acceleration: WebGL GPU rendering (50,000 records)<br/>
-            Contract: <code>data/ite_scores.csv</code>
-          </div>
-        </div>
+      {/* Chart Section 2 & 3: ITE Distribution Histogram & WebGL Feature Scatter Plot */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+        <IteHistogram iteScores={filteredIteScores} isLoading={isLoading} />
+        <IteScatterPlot iteScores={filteredIteScores} isLoading={isLoading} />
       </div>
     </div>
   );
