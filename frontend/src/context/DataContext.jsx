@@ -1,15 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import Papa from 'papaparse';
-
-export const REQUIRED_COLUMNS = [
-  'customer_id',
-  'age',
-  'loyalty_score',
-  'past_orders',
-  'avg_order_value',
-  'discount',
-  'revenue'
-];
+import apiClient from '../api/client';
+import { REQUIRED_COLUMNS } from '../constants/schema';
 
 const DataContext = createContext(null);
 
@@ -19,26 +11,68 @@ export function DataProvider({ children }) {
   const [fileSize, setFileSize] = useState(null);
   const [summary, setSummary] = useState(null);
   const [validationError, setValidationError] = useState(null);
+  
+  // Pipeline metrics state
   const [iteScores, setIteScores] = useState([]);
+  const [upliftData, setUpliftData] = useState([]);
+  const [allocationData, setAllocationData] = useState([]);
+  const [strategyData, setStrategyData] = useState([]);
+  const [budget, setBudget] = useState(25000);
+  
+  // Filtering and interaction state
+  const [filterSegment, setFilterSegment] = useState('all');
+  const [filterMinLoyalty, setFilterMinLoyalty] = useState(0);
+
+  // System & API status
   const [isLoading, setIsLoading] = useState(false);
+  const [apiStatus, setApiStatus] = useState('checking'); // 'checking' | 'online' | 'mock'
   const [activeTab, setActiveTab] = useState('upload');
 
-  // Load mock ITE predictions on mount to satisfy Task T4 cross-page contract
-  useEffect(() => {
-    fetch('/mock_ite.json')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to load mock_ite.json');
-        return res.json();
-      })
-      .then((data) => {
-        setIteScores(data);
-      })
-      .catch((err) => {
-        console.warn('Notice: mock_ite.json could not be loaded automatically:', err.message);
-      });
-  }, []);
+  // Load all pipeline metrics (Uplift, ITE, Allocation, Strategy)
+  const loadPipelineMetrics = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // 1. Check backend health
+      const health = await apiClient.checkHealth();
+      setApiStatus(health.online ? 'online' : 'mock');
 
-  // Format file size nicely
+      // 2. Fetch Uplift Curve
+      const upliftRes = await apiClient.fetchUpliftCurve();
+      if (upliftRes.success && Array.isArray(upliftRes.data)) {
+        setUpliftData(upliftRes.data);
+      }
+
+      // 3. Fetch ITE Scores
+      const iteRes = await apiClient.fetchIteScores();
+      if (iteRes.success && Array.isArray(iteRes.data)) {
+        setIteScores(iteRes.data);
+      }
+
+      // 4. Fetch Allocation
+      const allocRes = await apiClient.fetchAllocation(budget);
+      if (allocRes.success && Array.isArray(allocRes.data)) {
+        setAllocationData(allocRes.data);
+      }
+
+      // 5. Fetch Strategy Comparison
+      const stratRes = await apiClient.fetchStrategyComparison();
+      if (stratRes.success && Array.isArray(stratRes.data)) {
+        setStrategyData(stratRes.data);
+      }
+    } catch (err) {
+      console.warn('Error loading pipeline metrics:', err);
+      setApiStatus('mock');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [budget]);
+
+  // Initial mount load
+  useEffect(() => {
+    loadPipelineMetrics();
+  }, [loadPipelineMetrics]);
+
+  // Format file size utility
   const formatBytes = (bytes) => {
     if (!bytes || bytes === 0) return '0 B';
     const k = 1024;
@@ -47,7 +81,7 @@ export function DataProvider({ children }) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  // Validate parsed records against the required schema
+  // Validate parsed records against required causal schema
   const validateAndProcessData = (rows, name, size) => {
     if (!rows || rows.length === 0) {
       setValidationError('Uploaded CSV contains no valid data rows.');
@@ -113,7 +147,7 @@ export function DataProvider({ children }) {
     }
   };
 
-  // Process CSV File with PapaParse (Task T3 implementation)
+  // Process CSV File with PapaParse
   const parseCsvFile = (file) => {
     setIsLoading(true);
     setValidationError(null);
@@ -128,7 +162,6 @@ export function DataProvider({ children }) {
         if (results.errors && results.errors.length > 0) {
           const firstErr = results.errors[0];
           console.warn('PapaParse warnings/errors:', results.errors);
-          // If fatal error
           if (!results.data || results.data.length === 0) {
             setValidationError(`Parsing error: ${firstErr.message} (Row: ${firstErr.row})`);
             return;
@@ -143,7 +176,7 @@ export function DataProvider({ children }) {
     });
   };
 
-  // Load Pre-configured Sample CSV for instant evaluation / demo
+  // Load Pre-configured Sample CSV (1,000 customers)
   const loadSampleData = async () => {
     setIsLoading(true);
     setValidationError(null);
@@ -170,7 +203,7 @@ export function DataProvider({ children }) {
     }
   };
 
-  // Load Invalid Sample CSV to showcase schema validation rejection
+  // Load Invalid Sample CSV to test validation rejection
   const loadInvalidSample = async () => {
     setIsLoading(true);
     setValidationError(null);
@@ -212,13 +245,25 @@ export function DataProvider({ children }) {
     summary,
     validationError,
     iteScores,
+    setIteScores,
+    upliftData,
+    allocationData,
+    strategyData,
+    budget,
+    setBudget,
+    filterSegment,
+    setFilterSegment,
+    filterMinLoyalty,
+    setFilterMinLoyalty,
     isLoading,
+    apiStatus,
     activeTab,
     setActiveTab,
     parseCsvFile,
     loadSampleData,
     loadInvalidSample,
-    resetDataset
+    resetDataset,
+    loadPipelineMetrics
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

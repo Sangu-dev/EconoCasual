@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { useData, REQUIRED_COLUMNS } from '../context/DataContext';
+import { useData } from '../context/DataContext';
+import { REQUIRED_COLUMNS } from '../constants/schema';
 import { 
   Upload, 
   FileSpreadsheet, 
@@ -164,7 +165,7 @@ export default function UploadPage() {
             <div className="alert-heading">Schema Verification Passed!</div>
             <div className="alert-body">
               All <strong>7 required causal features</strong> (treatment, outcome, and confounders) were successfully verified.
-              Dataset <code>{fileName}</code> ({summary.totalRows.toLocaleString()} rows) is structured and ready for ITE scoring.
+              Dataset <code>{fileName}</code> ({fileSize ? `${fileSize} • ` : ''}{summary.totalRows.toLocaleString()} rows) is structured and ready for ITE scoring.
             </div>
           </div>
           <button 
