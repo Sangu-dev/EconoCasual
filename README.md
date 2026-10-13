@@ -52,6 +52,35 @@ pip install -r requirements.txt
 
 ---
 
+## Frontend Dashboard (Role C)
+
+The EconoCausal web application is an interactive analytics dashboard built with Vite, React 19, and Plotly.js.
+
+### Frontend Features:
+- **Client-Side CSV Ingestion:** In-browser PapaParse engine supporting 50,000+ rows with strict causal schema validation (`customer_id`, `age`, `loyalty_score`, `past_orders`, `avg_order_value`, `discount`, `revenue`).
+- **Causal Uplift & Qini Curves:** Dynamic Model Gain vs. Oracle Ceiling vs. Random Baseline with normalized AUUC metrics.
+- **ITE Distribution & Heterogeneity:** Treatment effect histogram with zero-effect marker and customer segmentation.
+- **WebGL GPU-Accelerated Scatter Plot:** Real-time 60 FPS scatter rendering using `scattergl` for large feature correlation analysis.
+- **Budget Allocation Engine:** Strategy comparisons (Blanket vs Random vs Optimized) and paginated allocation tables.
+- **Design System:** Minimal SaaS design with Light Theme by default, optional Dark Theme toggle, and collapsible sidebar.
+
+### Running Frontend Locally:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Access the dashboard at `http://localhost:5173/`.
+
+### Production Build:
+```bash
+cd frontend
+npm run build
+npm run preview
+```
+
+---
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
