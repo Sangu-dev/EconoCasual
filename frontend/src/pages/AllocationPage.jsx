@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react';
 import { useData } from '../context/DataContext';
 import AllocationCharts from '../charts/AllocationCharts';
 import { 
-  PieChart, 
   DollarSign, 
   Target, 
   TrendingUp, 
@@ -92,35 +91,32 @@ export default function AllocationPage() {
 
   return (
     <div className="animate-fade-in">
-      {/* Page Header */}
-      <div className="page-header">
+      {/* Top Controls Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 className="page-title">
-            <PieChart className="text-primary" size={32} />
-            Budget Optimization & Resource Allocation Engine
-          </h1>
-          <p className="page-desc">
-            Allocates marketing discount budgets to maximize net incremental revenue ROI under finite marketing constraints.
-            Visualizes SciPy optimization outputs and strategic comparisons across customer cohorts.
+          <h2 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
+            Budget Allocation & Strategy Optimization
+          </h2>
+          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
+            Constrained knapsack optimization allocating marketing discount offers to maximize incremental ROI.
           </p>
         </div>
 
         {/* Budget Selector */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-secondary)', padding: '0.4rem 0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
-          <DollarSign size={16} color="var(--primary-light)" />
-          <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Campaign Budget:</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-card)', padding: '0.35rem 0.85rem', borderRadius: 'var(--radius-full)', border: '1px solid var(--border-card)', boxShadow: 'var(--shadow-card)' }}>
+          <DollarSign size={15} color="var(--primary)" />
+          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Constrained Budget:</span>
           <select
             value={budget}
             onChange={(e) => handleBudgetChange(Number(e.target.value))}
             style={{
-              background: 'var(--bg-surface)',
+              background: 'transparent',
               color: 'var(--text-primary)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '0.25rem 0.6rem',
+              border: 'none',
+              fontWeight: 700,
               fontSize: '0.82rem',
-              fontWeight: 600,
-              cursor: 'pointer'
+              cursor: 'pointer',
+              outline: 'none'
             }}
           >
             <option value={10000}>$10,000</option>
@@ -131,42 +127,50 @@ export default function AllocationPage() {
         </div>
       </div>
 
-      {/* Top KPI Cards Preview */}
-      <div className="kpi-grid" style={{ marginBottom: '1.75rem' }}>
-        <div className="kpi-card">
-          <div className="kpi-label">
-            <span>Allocated Budget</span>
-            <DollarSign size={16} color="var(--primary-light)" />
+      {/* 4 KPI Cards Row (Reference 1 & 3 style) */}
+      <div className="kpi-row">
+        <div className="kpi-box">
+          <div className="kpi-box-val" style={{ color: 'var(--text-primary)' }}>
+            ${summaryMetrics.totalBudget.toLocaleString()}
           </div>
-          <div className="kpi-value">${summaryMetrics.totalBudget.toLocaleString()}</div>
-          <div className="kpi-subtext">Constrained marketing spend</div>
+          <div className="kpi-box-lbl">
+            <span>Marketing Budget</span>
+            <DollarSign size={13} color="var(--primary)" />
+          </div>
+          <div className="kpi-box-sub">Total discount spend constraint</div>
         </div>
 
-        <div className="kpi-card">
-          <div className="kpi-label">
+        <div className="kpi-box">
+          <div className="kpi-box-val" style={{ color: 'var(--primary)' }}>
+            {summaryMetrics.targetedCount.toLocaleString()}
+          </div>
+          <div className="kpi-box-lbl">
             <span>Targeted Customers</span>
-            <Target size={16} color="var(--cyan)" />
+            <Target size={13} color="var(--primary)" />
           </div>
-          <div className="kpi-value">{summaryMetrics.targetedCount.toLocaleString()}</div>
-          <div className="kpi-subtext">{summaryMetrics.targetedPct}% of total customer pool</div>
+          <div className="kpi-box-sub">{summaryMetrics.targetedPct}% of total customer pool</div>
         </div>
 
-        <div className="kpi-card">
-          <div className="kpi-label">
+        <div className="kpi-box">
+          <div className="kpi-box-val" style={{ color: 'var(--emerald)' }}>
+            +${summaryMetrics.totalGain.toLocaleString()}
+          </div>
+          <div className="kpi-box-lbl">
             <span>Expected Revenue Lift</span>
-            <TrendingUp size={16} color="var(--emerald)" />
+            <TrendingUp size={13} color="var(--emerald)" />
           </div>
-          <div className="kpi-value">+${summaryMetrics.totalGain.toLocaleString()}</div>
-          <div className="kpi-subtext">Avg +${summaryMetrics.avgGainPerCustomer} per targeted unit</div>
+          <div className="kpi-box-sub">Avg +${summaryMetrics.avgGainPerCustomer} per targeted unit</div>
         </div>
 
-        <div className="kpi-card">
-          <div className="kpi-label">
-            <span>Projected Incremental ROI</span>
-            <CheckCircle2 size={16} color="var(--amber)" />
+        <div className="kpi-box">
+          <div className="kpi-box-val" style={{ color: 'var(--text-primary)' }}>
+            {summaryMetrics.projectedRoi}%
           </div>
-          <div className="kpi-value">{summaryMetrics.projectedRoi}%</div>
-          <div className="kpi-subtext">{(Number(summaryMetrics.projectedRoi) / 100).toFixed(1)}x return on discount dollars</div>
+          <div className="kpi-box-lbl">
+            <span>Projected Incremental ROI</span>
+            <CheckCircle2 size={13} color="var(--amber)" />
+          </div>
+          <div className="kpi-box-sub">{(Number(summaryMetrics.projectedRoi) / 100).toFixed(1)}x return on marketing spend</div>
         </div>
       </div>
 
@@ -177,24 +181,23 @@ export default function AllocationPage() {
         isLoading={isLoading}
       />
 
-      {/* Customer Allocation Table (Integration Area Owned jointly with Role D) */}
-      <div className="card-panel">
-        <div className="card-header-row" style={{ flexWrap: 'wrap', gap: '1rem' }}>
+      {/* Customer Allocation Table (Reference 1 & 3 style) */}
+      <div className="panel-card">
+        <div className="panel-card-header">
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <TableIcon size={18} color="var(--cyan)" />
-              <h3 className="card-heading">Customer Allocation Plan</h3>
-              <span className="badge-role">Role D Shared Interface Contract</span>
-            </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-              Inspection table for customer-level discount assignments derived from <code>data/allocation.csv</code>
+            <h3 className="panel-card-title">
+              <TableIcon size={16} color="var(--primary)" />
+              Customer Allocation Plan & Recommendations
+            </h3>
+            <p className="panel-card-sub">
+              Target assignments calculated under bounded optimization (allocation.csv)
             </p>
           </div>
 
-          {/* Table Filters & Search */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          {/* Filters & Search */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
             <div style={{ position: 'relative' }}>
-              <Search size={14} style={{ position: 'absolute', left: 10, top: 10, color: 'var(--text-muted)' }} />
+              <Search size={13} style={{ position: 'absolute', left: 10, top: 9, color: 'var(--text-tertiary)' }} />
               <input
                 type="text"
                 placeholder="Search Customer ID..."
@@ -204,13 +207,14 @@ export default function AllocationPage() {
                   setCurrentPage(1);
                 }}
                 style={{
-                  padding: '0.4rem 0.75rem 0.4rem 2rem',
-                  background: 'var(--bg-secondary)',
-                  color: 'var(--text-primary)',
-                  border: '1px solid var(--border-medium)',
+                  padding: '0.35rem 0.65rem 0.35rem 1.85rem',
                   borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.82rem',
-                  width: 180
+                  border: '1px solid var(--border-card)',
+                  background: 'var(--bg-card-subtle)',
+                  color: 'var(--text-primary)',
+                  fontSize: '0.78rem',
+                  outline: 'none',
+                  width: 170
                 }}
               />
             </div>
@@ -222,12 +226,13 @@ export default function AllocationPage() {
                 setCurrentPage(1);
               }}
               style={{
-                padding: '0.4rem 0.75rem',
-                background: 'var(--bg-secondary)',
-                color: 'var(--text-primary)',
-                border: '1px solid var(--border-medium)',
+                padding: '0.35rem 0.65rem',
                 borderRadius: 'var(--radius-sm)',
-                fontSize: '0.82rem'
+                border: '1px solid var(--border-card)',
+                background: 'var(--bg-card)',
+                color: 'var(--text-primary)',
+                fontSize: '0.78rem',
+                outline: 'none'
               }}
             >
               <option value="all">All Segments</option>
@@ -240,13 +245,13 @@ export default function AllocationPage() {
         </div>
 
         {/* Allocation Table */}
-        <div className="table-wrapper" style={{ marginTop: '1rem' }}>
-          <table className="data-table">
+        <div className="table-container">
+          <table className="clean-table">
             <thead>
               <tr>
                 <th>Customer ID</th>
                 <th>Causal Segment</th>
-                <th>Assigned Discount</th>
+                <th>Allocated Discount</th>
                 <th>Expected Net Gain</th>
                 <th>Action Recommendation</th>
               </tr>
@@ -255,7 +260,7 @@ export default function AllocationPage() {
               {paginatedRows.length === 0 ? (
                 <tr>
                   <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-                    No customer allocation records matching filters.
+                    No customer allocation records found.
                   </td>
                 </tr>
               ) : (
@@ -268,31 +273,31 @@ export default function AllocationPage() {
                       <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{row.customer_id}</td>
                       <td>
                         <span 
-                          className={`col-tag ${
-                            row.segment === 'Persuadables' ? 'col-tag-matched' : 
-                            row.segment === 'Sleeping Dogs' ? 'col-tag-missing' : 
-                            'col-tag-extra'
+                          className={`status-badge ${
+                            row.segment === 'Persuadables' ? 'status-badge-green' : 
+                            row.segment === 'Sleeping Dogs' ? '' : 
+                            'status-badge-blue'
                           }`}
-                          style={{ padding: '0.2rem 0.6rem', fontSize: '0.75rem' }}
+                          style={{ fontSize: '0.72rem', padding: '1px 8px' }}
                         >
                           {row.segment}
                         </span>
                       </td>
-                      <td style={{ fontWeight: 600, color: discount > 0 ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                      <td style={{ fontWeight: 600 }}>
                         ${discount.toFixed(2)}
                       </td>
-                      <td style={{ fontWeight: 700, color: gain > 0 ? '#34d399' : 'var(--text-muted)' }}>
+                      <td style={{ fontWeight: 700, color: gain > 0 ? 'var(--emerald)' : 'var(--text-muted)' }}>
                         {gain > 0 ? `+$${gain.toFixed(2)}` : '$0.00'}
                       </td>
-                      <td style={{ fontSize: '0.8rem' }}>
+                      <td>
                         {discount > 0 ? (
-                          <span style={{ color: '#6ee7b7', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <span style={{ color: 'var(--emerald)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.78rem', fontWeight: 600 }}>
                             <CheckCircle2 size={13} />
                             Deploy Discount Offer
                           </span>
                         ) : (
-                          <span style={{ color: 'var(--text-muted)' }}>
-                            Exclude (Preserve Margin)
+                          <span style={{ color: 'var(--text-tertiary)', fontSize: '0.78rem' }}>
+                            Exclude (Margin Protection)
                           </span>
                         )}
                       </td>
@@ -306,26 +311,28 @@ export default function AllocationPage() {
 
         {/* Pagination Bar */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid var(--border-subtle)', flexWrap: 'wrap', gap: '0.75rem' }}>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
             Showing {filteredRows.length > 0 ? (currentPage - 1) * rowsPerPage + 1 : 0} to{' '}
-            {Math.min(currentPage * rowsPerPage, filteredRows.length)} of {filteredRows.length.toLocaleString()} customers
+            {Math.min(currentPage * rowsPerPage, filteredRows.length)} of {filteredRows.length.toLocaleString()} records
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <button
-              className="btn btn-secondary"
-              style={{ padding: '0.3rem 0.75rem', fontSize: '0.78rem' }}
+              type="button"
+              className="btn-pill btn-pill-secondary"
+              style={{ padding: '0.25rem 0.65rem', fontSize: '0.74rem' }}
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             >
               Previous
             </button>
-            <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', padding: '0 0.5rem' }}>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', padding: '0 0.4rem' }}>
               Page {currentPage} of {totalPages}
             </span>
             <button
-              className="btn btn-secondary"
-              style={{ padding: '0.3rem 0.75rem', fontSize: '0.78rem' }}
+              type="button"
+              className="btn-pill btn-pill-secondary"
+              style={{ padding: '0.25rem 0.65rem', fontSize: '0.74rem' }}
               disabled={currentPage >= totalPages}
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             >

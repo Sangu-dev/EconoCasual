@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Plot from './PlotlyComponent';
 import { usePlotlyTheme } from './usePlotlyTheme';
-import { BarChart3, Info, HelpCircle } from 'lucide-react';
+import { BarChart3, Info } from 'lucide-react';
 
 export default function IteHistogram({ iteScores = [], isLoading = false }) {
   const theme = usePlotlyTheme();
@@ -142,20 +142,24 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
   }
 
   return (
-    <div className="card-panel">
-      {/* Header */}
-      <div className="card-header-row">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 'var(--radius-md)', background: 'rgba(99, 102, 241, 0.15)', color: 'var(--primary-light)' }}>
-            <BarChart3 size={20} />
-          </div>
-          <div>
-            <h3 className="card-heading">ITE Distribution & Treatment Heterogeneity</h3>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-              Variation of Individual Treatment Effects across {stats?.total.toLocaleString()} customers
-            </p>
-          </div>
+    <div className="panel-card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      {/* Header (Reference 1 Score Distribution style) */}
+      <div className="panel-card-header">
+        <div>
+          <h3 className="panel-card-title">
+            <BarChart3 size={17} color="var(--primary)" />
+            <span>Score Distribution</span>
+          </h3>
+          <p className="panel-card-sub">
+            Individual Treatment Effect (ITE) distribution across {stats?.total.toLocaleString()} customers
+          </p>
         </div>
+
+        {stats && (
+          <div style={{ fontSize: '0.74rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+            Median: <strong style={{ color: 'var(--text-primary)' }}>${stats.median}</strong> | Mean: <strong style={{ color: 'var(--text-primary)' }}>${stats.mean}</strong> | Max: <strong style={{ color: 'var(--text-primary)' }}>${stats.max}</strong>
+          </div>
+        )}
       </div>
 
       {/* KPI Stats */}
@@ -188,24 +192,33 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
       )}
 
       {/* Plot */}
-      <div style={{ width: '100%', height: 380, marginTop: '0.5rem' }}>
+      <div style={{ width: '100%', height: 350, marginTop: '0.5rem' }}>
         <Plot
           data={traces}
-          layout={layout}
+          layout={{ ...layout, height: 350 }}
           config={config}
           style={{ width: '100%', height: '100%' }}
           useResizeHandler={true}
         />
       </div>
 
-      {/* Explanatory Caption */}
-      <div style={{ marginTop: '0.85rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-        <HelpCircle size={15} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--cyan)' }} />
-        <span>
-          <strong>Why Heterogeneity Matters:</strong> If treatment effects were homogeneous, all customers would cluster tightly around the mean.
-          The wide variance (from ${stats?.min} to ${stats?.max}) proves that discounting everyone uniformly burns marketing budget on customers who either buy anyway or buy less.
-        </span>
-      </div>
+      {/* Reference 1 Score Distribution Legend */}
+      {stats && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.25rem', marginTop: '0.75rem', paddingTop: '0.65rem', borderTop: '1px solid var(--border-subtle)', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.76rem' }}>
+            <span style={{ width: 9, height: 9, borderRadius: 2, backgroundColor: '#10b981' }} />
+            <span style={{ fontWeight: 600 }}>Hot (Persuadables): {stats.persuadablesPct}%</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.76rem' }}>
+            <span style={{ width: 9, height: 9, borderRadius: 2, backgroundColor: '#6366f1' }} />
+            <span style={{ fontWeight: 600 }}>Neutral (Sure Things): {((stats.moderatePositive / stats.total) * 100).toFixed(1)}%</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.76rem' }}>
+            <span style={{ width: 9, height: 9, borderRadius: 2, backgroundColor: '#f43f5e' }} />
+            <span style={{ fontWeight: 600 }}>Cold (Sleeping Dogs): {stats.sleepingDogsPct}%</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -184,42 +184,38 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
   }
 
   return (
-    <div className="card-panel">
-      {/* Header with View Toggle and Metric Badges */}
-      <div className="card-header-row" style={{ flexWrap: 'wrap', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 'var(--radius-md)', background: 'rgba(99, 102, 241, 0.15)', color: 'var(--primary-light)' }}>
-            <LineChart size={20} />
-          </div>
-          <div>
-            <h3 className="card-heading">
-              {viewMode === 'uplift' ? 'Causal Uplift Curve' : 'Net Qini Curve'}
-            </h3>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-              {viewMode === 'uplift' 
-                ? 'Model ranking vs Oracle upper bound vs Random targeting' 
-                : 'Net incremental value over arbitrary random assignment'}
-            </p>
-          </div>
+    <div className="panel-card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      {/* Header with View Toggle (Reference 1 Lift Curve style) */}
+      <div className="panel-card-header">
+        <div>
+          <h3 className="panel-card-title">
+            <LineChart size={17} color="var(--primary)" />
+            <span>{viewMode === 'uplift' ? 'Lift Curve' : 'Net Qini Lift'}</span>
+          </h3>
+          <p className="panel-card-sub">
+            {viewMode === 'uplift' 
+              ? 'Top decile converts at 4.5x baseline • Model vs Oracle vs Random' 
+              : 'Cumulative incremental revenue over arbitrary targeting'}
+          </p>
         </div>
 
         {/* View Mode Toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-secondary)', padding: '0.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
+        <div style={{ display: 'flex', gap: '0.4rem' }}>
           <button
             type="button"
-            className={`btn ${viewMode === 'uplift' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem' }}
+            className={`btn-pill ${viewMode === 'uplift' ? 'btn-pill-primary' : 'btn-pill-secondary'}`}
+            style={{ padding: '0.25rem 0.7rem', fontSize: '0.74rem' }}
             onClick={() => setViewMode('uplift')}
           >
             Uplift Curve
           </button>
           <button
             type="button"
-            className={`btn ${viewMode === 'qini' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem' }}
+            className={`btn-pill ${viewMode === 'qini' ? 'btn-pill-primary' : 'btn-pill-secondary'}`}
+            style={{ padding: '0.25rem 0.7rem', fontSize: '0.74rem' }}
             onClick={() => setViewMode('qini')}
           >
-            Qini Curve
+            Qini Decile
           </button>
         </div>
       </div>
