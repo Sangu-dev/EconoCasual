@@ -1,151 +1,72 @@
-
 import argparse
 from pathlib import Path
 
 import pandas as pd
 
-
-RENAME = {
-    "recency": "months_since_last_purchase",
-    "history": "past_spend",
-    "used_discount": "previously_used_discount",
-    "used_bogo": "previously_used_bogo",
-    "zip_code": "area_type",
-    "is_referral": "is_referral",
-    "channel": "purchase_channel",
-}
+RAW_COLUMNS = ["recency", "history", "used_discount", "used_bogo", "zip_code",
+               "is_referral", "channel", "offer", "conversion"]
+NUMERIC_FEATURES = ["recency", "history", "used_discount", "used_bogo", "is_referral"]
+CATEGORICAL = ["zip_code", "channel"]
 
 
-def transform(
-    data: pd.DataFrame,
-    arm: str = "discount",
-) -> pd.DataFrame:
-    """Prepare marketing campaign data for causal ML."""
+def _pick(labels, wanted, what, test):
+    by_lower = {str(l).strip().lower(): l for l in labels}
+    if wanted is not None:
+        if wanted.strip().lower() not in by_lower:
+            raise ValueError(f"{what} label '{wanted}' not found. Labels in the file: {sorted(map(str, labels))}")
+        return by_lower[wanted.strip().lower()]
+    found = [orig for low, orig in by_lower.items() if test(low)]
+    if len(found) != 1:
+        raise ValueError(f"Could not detect the {what} label automatically. "
+                         f"Labels in the file: {sorted(map(str, labels))}. "
+                         f"Re-run with --{'treat' if what == 'discount' else 'control'} \"<label>\".")
+    return found[0]
 
-    required = [
-        "recency",
-        "history",
-        "used_discount",
-        "used_bogo",
-        "zip_code",
-        "is_referral",
-        "channel",
-        "offer",
-        "conversion",
-    ]
 
-    missing = [c for c in required if c not in data.columns]
+def transform(raw: pd.DataFrame, treat: str = None, control: str = None,
+              value_per_conversion: float = 25.0) -> pd.DataFrame:
+    missing = [c for c in RAW_COLUMNS if c not in raw.columns]
     if missing:
-        raise ValueError(f"Missing columns: {missing}")
+        raise ValueError(f"Raw data is missing columns: {missing}. Found: {list(raw.columns)}")
+    if not set(raw["conversion"].dropna().unique()) <= {0, 1}:
+        raise ValueError("`conversion` should be 0/1.")
 
-    df = data.copy()
+    offers = raw["offer"].astype(str).str.strip()
+    labels = offers.unique()
+    control_label = _pick(labels, control, "no-offer", lambda s: s.startswith("no"))
+    treat_label = _pick(labels, treat, "discount", lambda s: "discount" in s)
+    if control_label == treat_label:
+        raise ValueError("Treatment and control labels are the same.")
 
-    df["offer"] = df["offer"].astype(str).str.strip()
+    keep = offers.isin([control_label, treat_label]).to_numpy()
+    X = raw[NUMERIC_FEATURES + CATEGORICAL].copy()
+    X = pd.get_dummies(X, columns=CATEGORICAL, dtype=int)
 
-    known = {"No Offer", "Discount", "Buy One Get One"}
-    unexpected = set(df["offer"].unique()) - known
-
-    if unexpected:
-        raise ValueError(
-            f"Unexpected offer labels: {sorted(unexpected)}"
-        )
-
-    if arm == "discount":
-        treated_label = "Discount"
-    elif arm == "bogo":
-        treated_label = "Buy One Get One"
-    else:
-        raise ValueError("arm must be 'discount' or 'bogo'")
-
-    keep = df["offer"].isin(["No Offer", treated_label])
-    df = df.loc[keep].copy()
-
-    df["treatment"] = (
-        df["offer"] == treated_label
-    ).astype(int)
-
-    df["outcome"] = pd.to_numeric(
-        df["conversion"], errors="raise"
-    )
-
-    if not df["outcome"].isin([0, 1]).all():
-        raise ValueError("conversion must contain only 0 and 1")
-
-    feature_cols = [
-        "recency",
-        "history",
-        "used_discount",
-        "used_bogo",
-        "zip_code",
-        "is_referral",
-        "channel",
-    ]
-
-    X = df[feature_cols].rename(columns=RENAME)
-
-    X = pd.get_dummies(
-        X,
-        columns=["area_type", "purchase_channel"],
-        dtype=int,
-    )
-
-    X = X.replace([float("inf"), float("-inf")], float("nan"))
-
-    for col in X.columns:
-        X[col] = pd.to_numeric(X[col], errors="raise")
-        X[col] = X[col].fillna(X[col].median())
-
-    X = X.fillna(0)
-
-    result = X.reset_index(drop=True)
-    result.insert(
-        0, "customer_id", range(1, len(result) + 1)
-    )
-    result["treatment"] = df["treatment"].to_numpy()
-    result["outcome"] = df["outcome"].to_numpy()
-
-    return result
+    df = X[keep].reset_index(drop=True).copy()
+    df.insert(0, "customer_id", range(1, len(df) + 1))
+    df["discount"] = (offers[keep] == treat_label).astype(int).to_numpy()
+    df["revenue"] = raw.loc[keep, "conversion"].to_numpy(float) * value_per_conversion
+    return df
 
 
-def main(arm: str, raw: str, out: str):
-    data = pd.read_csv(raw)
-
-    result = transform(data, arm=arm)
-
-    output = Path(out)
-    output.parent.mkdir(parents=True, exist_ok=True)
-    result.to_csv(output, index=False)
-
-    print(f"Saved {len(result)} rows to {output}")
-    print(f"Treatment arm: {arm}")
-    print(f"Treatment share: {result['treatment'].mean():.1%}")
-    print(f"Conversion rate: {result['outcome'].mean():.2%}")
-    print("\nTreatment counts:")
-    print(result["treatment"].value_counts())
-    print("\nConversion by treatment:")
-    print(result.groupby("treatment")["outcome"].agg(
-        ["count", "mean"]
-    ))
-    print("\nOutput columns:")
-    print(result.columns.tolist())
+def main(raw_path: str, out: str, treat, control, value: float):
+    raw = pd.read_csv(raw_path)
+    df = transform(raw, treat, control, value)
+    Path(out).parent.mkdir(exist_ok=True)
+    df.to_csv(out, index=False)
+    print(f"Saved {len(df)} rows to {out}")
+    print(f"Share with the discount offer: {df.discount.mean():.1%}")
+    print(f"Conversion rate: no offer {(df[df.discount == 0].revenue > 0).mean():.2%} | "
+          f"discount {(df[df.discount == 1].revenue > 0).mean():.2%}")
+    print("Columns:", list(df.columns))
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--arm",
-        default="discount",
-        choices=["discount", "bogo"],
-    )
-    parser.add_argument(
-        "--raw",
-        default="data/data.csv",
-        help="Path to the original marketing CSV",
-    )
-    parser.add_argument(
-        "--out",
-        default="data/marketing_campaign.csv",
-    )
-
-    args = parser.parse_args()
-    main(args.arm, args.raw, args.out)
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--raw", default="data/kaggle_promo.csv")
+    ap.add_argument("--out", default="data/retail_campaign.csv")
+    ap.add_argument("--treat", default=None, help="label of the discount offer, e.g. Discount")
+    ap.add_argument("--control", default=None, help="label of the no-offer group, e.g. 'No Offer'")
+    ap.add_argument("--value", type=float, default=25.0, help="assumed revenue per conversion ($)")
+    a = ap.parse_args()
+    main(a.raw, a.out, a.treat, a.control, a.value)
