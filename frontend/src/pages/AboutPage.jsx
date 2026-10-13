@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, GitBranch, Cpu, Brain, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { HelpCircle, Layers, Cpu, Brain, Database, LineChart, PieChart, ShieldCheck } from 'lucide-react';
 
 export default function AboutPage() {
   return (
@@ -23,25 +23,24 @@ export default function AboutPage() {
             </div>
             <div>
               <h1 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.4px', margin: 0 }}>
-                Methodology, Causal Logic & Team Architecture
+                Methodology, Causal Logic & System Architecture
               </h1>
               <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-                Scientific principles behind EconoCausal: Double Machine Learning (DML), Individual Treatment Effects (ITE), and engineering boundaries.
+                Scientific foundations of EconoCausal: Double Machine Learning (DML), Individual Treatment Effects (ITE), and End-to-End Pricing Optimization.
               </p>
             </div>
           </div>
         </div>
 
-        <div className="badge-role">
-          <span>Role C: Sangamesh Ragam</span>
-          <span style={{ color: 'var(--text-tertiary)' }}>•</span>
-          <span>Team Group 25</span>
+        <div className="status-badge status-badge-blue">
+          <ShieldCheck size={13} color="var(--primary)" />
+          <span>Causal ML Framework</span>
         </div>
       </div>
 
       {/* Scientific Logic Section */}
-      <div className="card-panel">
-        <div className="card-header-row">
+      <div className="panel-card">
+        <div className="panel-card-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <Brain size={18} color="var(--primary)" />
             <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
@@ -76,8 +75,8 @@ export default function AboutPage() {
       </div>
 
       {/* The 4 Customer Segments */}
-      <div className="card-panel">
-        <div className="card-header-row">
+      <div className="panel-card">
+        <div className="panel-card-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <Cpu size={18} color="var(--primary)" />
             <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
@@ -166,58 +165,81 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Role Ownership & Architecture */}
-      <div className="card-panel">
-        <div className="card-header-row">
+      {/* End-to-End System Pipeline Architecture */}
+      <div className="panel-card">
+        <div className="panel-card-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <GitBranch size={18} color="var(--primary)" />
+            <Layers size={18} color="var(--primary)" />
             <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-              Team Engineering Ownership & Hand-Offs
+              EconoCausal End-to-End System Pipeline
             </h2>
           </div>
-          <span className="badge-role">Branch: sangamesh-ragam</span>
+          <span className="status-badge status-badge-green">Engine Architecture</span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>
-          {/* Role C */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem', marginTop: '0.5rem' }}>
+          {/* Stage 1 */}
           <div style={{ 
-            padding: '1.25rem', 
-            backgroundColor: 'var(--bg-card-subtle)', 
-            border: '1px solid var(--primary-border)', 
-            borderRadius: 'var(--radius-sm)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-              <ShieldCheck size={18} color="var(--primary)" />
-              <strong style={{ color: 'var(--text-primary)', fontSize: '0.92rem' }}>Role C (Sangamesh Ragam) — My Responsibilities</strong>
-            </div>
-            <ul style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', paddingLeft: '1.2rem', lineHeight: 1.8 }}>
-              <li>Executive Application Shell, navigation hierarchy, and layout system</li>
-              <li>PapaParse CSV Ingestion engine with column mapping and schema validation</li>
-              <li>Centralized DataContext state management and event pipeline</li>
-              <li>Interactive Plotly visualizations (Uplift curves, Qini gain, Score distribution)</li>
-              <li>GPU-accelerated WebGL <code>scattergl</code> heterogeneity inspector (up to 50k rows)</li>
-              <li>Centralized FastAPI asynchronous API client with resilient offline mock fallback</li>
-            </ul>
-          </div>
-
-          {/* Role D */}
-          <div style={{ 
-            padding: '1.25rem', 
+            padding: '1.2rem', 
             backgroundColor: 'var(--bg-card-subtle)', 
             border: '1px solid var(--border-card)', 
             borderRadius: 'var(--radius-sm)'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-              <CheckCircle2 size={18} color="var(--emerald)" />
-              <strong style={{ color: 'var(--text-primary)', fontSize: '0.92rem' }}>Role D (Shivani Pathak) Scope</strong>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <Database size={16} color="var(--primary)" />
+              <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>1. Ingestion & Validation</strong>
             </div>
-            <ul style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', paddingLeft: '1.2rem', lineHeight: 1.8 }}>
-              <li>Customer data table pagination and virtualization</li>
-              <li>Filter components (Loyalty score range slider, cohort select)</li>
-              <li>Campaign budget form controls and business constraints</li>
-              <li>Glossary and causal methodology documentation copy</li>
-              <li>Provides <code>frontend/public/mock_ite.json</code> handoff contract</li>
-            </ul>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+              Client-side streaming with PapaParse. Validates the 7 required causal features (<code>customer_id</code>, <code>loyalty_score</code>, <code>discount</code>, <code>revenue</code>, etc.) preventing downstream schema mismatches.
+            </p>
+          </div>
+
+          {/* Stage 2 */}
+          <div style={{ 
+            padding: '1.2rem', 
+            backgroundColor: 'var(--bg-card-subtle)', 
+            border: '1px solid var(--border-card)', 
+            borderRadius: 'var(--radius-sm)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <Brain size={16} color="var(--cyan)" />
+              <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>2. Double ML Residualization</strong>
+            </div>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+              EconML Frisch-Waugh-Lovell orthogonalization isolates true treatment elasticity from observational confounders (past orders, customer tenure) via cross-fitting.
+            </p>
+          </div>
+
+          {/* Stage 3 */}
+          <div style={{ 
+            padding: '1.2rem', 
+            backgroundColor: 'var(--bg-card-subtle)', 
+            border: '1px solid var(--border-card)', 
+            borderRadius: 'var(--radius-sm)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <LineChart size={16} color="var(--emerald)" />
+              <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>3. Uplift & ITE Scoring</strong>
+            </div>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+              Scores customer-level counterfactual lift, ranks cohorts by treatment sensitivity, and generates normalized Qini (AUUC) curves benchmarked against random targeting.
+            </p>
+          </div>
+
+          {/* Stage 4 */}
+          <div style={{ 
+            padding: '1.2rem', 
+            backgroundColor: 'var(--bg-card-subtle)', 
+            border: '1px solid var(--border-card)', 
+            borderRadius: 'var(--radius-sm)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <PieChart size={16} color="var(--amber)" />
+              <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>4. Knapsack Budget Optimizer</strong>
+            </div>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+              Solves bounded linear optimization allocating finite promotional budget only to customers where expected incremental revenue exceeds discount cost.
+            </p>
           </div>
         </div>
       </div>
