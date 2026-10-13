@@ -1,29 +1,29 @@
 /* ==========================================================================
    EconoCausal — Minimal, Premium, Executive SaaS Design System
-   Inspired by: Reference 1 (Model Evaluation Analytics), 
-                Reference 2 (Import Data & Mapping Experience), 
+   Inspired by: Reference 1 (UCI Bank Marketing / Model Analytics), 
+                Reference 2 (Import Data & Field Mapping Modal), 
                 Reference 3 (Mindweave SaaS Dashboard)
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* Surface & Canvas (Reference 1 & 3: Crisp, elegant off-white canvas) */
-  --bg-app: #f4f6fa;
+  /* Surface & Canvas (Clean, elegant, modern off-white canvas) */
+  --bg-app: #f6f8fb;
   --bg-card: #ffffff;
   --bg-card-subtle: #f8fafc;
-  --bg-card-hover: #f9fafb;
+  --bg-card-hover: #f1f5f9;
   --bg-sidebar: #ffffff;
-  --bg-sidebar-active: #111827;
+  --bg-sidebar-active: #4f46e5;
   --bg-sidebar-active-text: #ffffff;
   
   /* Borders & Dividers */
   --border-subtle: #edf2f7;
-  --border-card: #e5e9f0;
-  --border-active: #c7d2fe;
+  --border-card: #e2e8f0;
+  --border-active: #a5b4fc;
   --border-dashed: #cbd5e1;
   
-  /* Brand Primary (Deep refined Indigo / Violet) */
+  /* Brand Primary (Refined Indigo / Violet) */
   --primary: #4f46e5;
   --primary-hover: #4338ca;
   --primary-light: #6366f1;
@@ -42,12 +42,12 @@
   --amber-border: #fde68a;
   --amber-text: #92400e;
   
-  --rose: #f43f5e;
-  --rose-subtle: #fff1f2;
-  --rose-border: #fecdd3;
-  --rose-text: #9f1239;
+  --rose: #ef4444;
+  --rose-subtle: #fef2f2;
+  --rose-border: #fecaca;
+  --rose-text: #991b1b;
   
-  --cyan: #0ea5e9;
+  --cyan: #0284c7;
   --cyan-subtle: #f0f9ff;
   --cyan-border: #bae6fd;
   --cyan-text: #0369a1;
@@ -56,28 +56,28 @@
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --text-muted: #6b7280;
-  --text-tertiary: #9ca3af;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-tertiary: #94a3b8;
   
   /* Elevation & Shadows */
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02);
-  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.03);
-  --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 6px 16px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
   
   /* Geometry */
   --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
   --radius-full: 9999px;
   
   --sidebar-width: 240px;
   --topbar-height: 60px;
 }
 
-/* Optional Dark Theme */
+/* Dark Theme */
 [data-theme="dark"] {
   --bg-app: #090d16;
   --bg-card: #0f172a;
@@ -92,8 +92,8 @@
   --border-active: rgba(99, 102, 241, 0.4);
   --border-dashed: rgba(255, 255, 255, 0.15);
   
-  --primary-subtle: rgba(99, 102, 241, 0.12);
-  --primary-border: rgba(99, 102, 241, 0.3);
+  --primary-subtle: rgba(99, 102, 241, 0.15);
+  --primary-border: rgba(99, 102, 241, 0.35);
   --primary-text: #c7d2fe;
   
   --emerald-subtle: rgba(16, 185, 129, 0.12);
@@ -102,40 +102,46 @@
   
   --amber-subtle: rgba(245, 158, 11, 0.12);
   --amber-border: rgba(245, 158, 11, 0.25);
-  --amber-text: #fde68a;
+  --amber-text: #fcd34d;
   
-  --rose-subtle: rgba(244, 63, 94, 0.12);
-  --rose-border: rgba(244, 63, 94, 0.25);
+  --rose-subtle: rgba(239, 68, 68, 0.12);
+  --rose-border: rgba(239, 68, 68, 0.25);
   --rose-text: #fca5a5;
   
-  --cyan-subtle: rgba(14, 165, 233, 0.12);
-  --cyan-border: rgba(14, 165, 233, 0.25);
+  --cyan-subtle: rgba(2, 132, 199, 0.12);
+  --cyan-border: rgba(2, 132, 199, 0.25);
   --cyan-text: #7dd3fc;
-
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-tertiary: #475569;
   
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-tertiary: #64748b;
+  
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 8px 20px 0 rgba(0, 0, 0, 0.5);
+  --shadow-modal: 0 25px 30px -5px rgba(0, 0, 0, 0.6);
 }
 
-/* Global Reset */
+/* Reset & Global */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
+html, body {
+  height: 100%;
   font-family: var(--font-sans);
   background-color: var(--bg-app);
   color: var(--text-primary);
+  font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
 }
 
 /* Main Dashboard Layout Shell */
@@ -149,7 +155,7 @@ body {
 .app-sidebar {
   width: var(--sidebar-width);
   background-color: var(--bg-sidebar);
-  border-right: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-card);
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -185,8 +191,8 @@ body {
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-weight: 800;
+  font-size: 1rem;
   box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
 }
 
@@ -241,9 +247,10 @@ body {
 }
 
 .sidebar-link.active {
-  background-color: var(--bg-sidebar-active);
-  color: var(--bg-sidebar-active-text);
+  background-color: var(--primary);
+  color: #ffffff;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
 }
 
 .sidebar-footer {
@@ -263,7 +270,7 @@ body {
   color: var(--text-muted);
   padding: 0.35rem 0.65rem;
   border-radius: var(--radius-xs);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-card);
 }
 
 /* Main App Wrapper */
@@ -278,7 +285,7 @@ body {
 .app-topbar {
   height: var(--topbar-height);
   background-color: var(--bg-card);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-card);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -306,7 +313,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   background-color: var(--bg-card-subtle);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-card);
   padding: 0.35rem 0.75rem;
   border-radius: var(--radius-sm);
   font-size: 0.8rem;
@@ -324,11 +331,11 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.3rem 0.65rem;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 600;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-card);
   background-color: var(--bg-card);
   color: var(--text-secondary);
 }
@@ -365,6 +372,89 @@ body {
   margin: 0 auto;
 }
 
+/* Page Header & Common Headings */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.page-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+.badge-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-card-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-card);
+}
+
+.card-panel {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 1.25rem;
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.card-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.formula-box {
+  background-color: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  color: var(--primary-text);
+  margin: 1.25rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 /* Reference 1: Model Context Bar (UCI Bank Marketing Dataset Header style) */
 .model-context-card {
   background-color: var(--bg-card);
@@ -388,6 +478,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .model-title {
@@ -512,6 +603,11 @@ body {
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kpi-box:hover {
+  box-shadow: var(--shadow-hover);
 }
 
 .kpi-box-val {
@@ -569,6 +665,7 @@ body {
 .panel-card-sub {
   font-size: 0.78rem;
   color: var(--text-muted);
+  margin-top: 0.15rem;
 }
 
 /* Reference 2: Modal / Import Data Experience */
@@ -597,8 +694,8 @@ body {
 
 /* Reference 2: Dropzone */
 .upload-dropzone {
-  border: 1.5px dashed #c7d2fe;
-  background-color: #f8fafc;
+  border: 1.5px dashed var(--border-dashed);
+  background-color: var(--bg-card-subtle);
   border-radius: var(--radius-md);
   padding: 2.25rem 1.5rem;
   text-align: center;
@@ -664,7 +761,7 @@ body {
   font-weight: 600;
   padding: 0.6rem 0.85rem;
   border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-card);
   text-align: left;
 }
 
@@ -773,6 +870,22 @@ body {
   height: 100%;
   background-color: var(--primary);
   border-radius: var(--radius-full);
+}
+
+/* Fade in animations */
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive adjustments */

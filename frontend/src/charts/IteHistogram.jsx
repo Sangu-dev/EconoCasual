@@ -5,15 +5,16 @@ import { BarChart3, Info } from 'lucide-react';
 
 export default function IteHistogram({ iteScores = [], isLoading = false }) {
   const theme = usePlotlyTheme();
+
   // Statistics and segment summaries
   const stats = useMemo(() => {
     if (!iteScores || iteScores.length === 0) return null;
 
     const values = iteScores.map((d) => Number(d.ite)).filter((v) => !isNaN(v));
-    if (values.length === 0) return null;
-
     const n = values.length;
-    const sum = values.reduce((acc, v) => acc + v, 0);
+    if (n === 0) return null;
+
+    const sum = values.reduce((a, b) => a + b, 0);
     const mean = sum / n;
 
     const sorted = [...values].sort((a, b) => a - b);
@@ -26,16 +27,22 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
     const moderatePositive = values.filter((v) => v >= 0 && v <= 10).length;
     const sleepingDogs = values.filter((v) => v < 0).length;
 
+    // P90 quantile
+    const p90Index = Math.min(n - 1, Math.floor(n * 0.90));
+    const p90 = sorted[p90Index];
+
     return {
       total: n,
       mean: mean.toFixed(2),
       median: median.toFixed(2),
       stdDev: stdDev.toFixed(2),
+      p90: p90.toFixed(2),
       min: sorted[0].toFixed(2),
       max: sorted[n - 1].toFixed(2),
       persuadables,
       persuadablesPct: ((persuadables / n) * 100).toFixed(1),
       moderatePositive,
+      moderatePositivePct: ((moderatePositive / n) * 100).toFixed(1),
       sleepingDogs,
       sleepingDogsPct: ((sleepingDogs / n) * 100).toFixed(1)
     };
@@ -51,30 +58,35 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
       {
         x: values,
         type: 'histogram',
-        nbinsx: 35,
+        nbinsx: 30,
         marker: {
-          color: values.map((v) => (v < 0 ? '#f43f5e' : v > 10 ? '#10b981' : '#6366f1')),
-          line: { color: 'rgba(255, 255, 255, 0.1)', width: 1 }
+          color: '#6366f1',
+          opacity: 0.85,
+          line: { color: '#4f46e5', width: 1 }
         },
-        hovertemplate: '<b>ITE Range:</b> %{x:.2f}<br><b>Customers:</b> %{y:,} records<extra></extra>'
+        hovertemplate: '<b>Effect Range:</b> $%{x:.2f}<br><b>Customers:</b> %{y:,}<extra></extra>'
       }
     ];
   }, [iteScores]);
 
   const layout = {
     autosize: true,
-    height: 380,
-    margin: { l: 60, r: 25, t: 30, b: 50 },
-    paper_bgcolor: theme.paper_bgcolor,
-    plot_bgcolor: theme.plot_bgcolor,
-    font: theme.font,
+    height: 330,
+    margin: { l: 55, r: 20, t: 20, b: 50 },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    font: {
+      family: 'Plus Jakarta Sans, sans-serif',
+      color: theme.font.color,
+      size: 11
+    },
     hoverlabel: theme.hoverlabel,
     xaxis: {
-      title: { text: 'Individual Treatment Effect (Δ Revenue $)', font: { size: 11, color: theme.font.color } },
+      title: { text: 'Individual Treatment Effect ($/Customer Lift)', font: { size: 11, color: theme.font.color } },
       tickprefix: '$',
       showgrid: true,
       gridcolor: theme.gridcolor,
-      zerolinecolor: 'rgba(244, 63, 94, 0.6)',
+      zerolinecolor: 'rgba(239, 68, 68, 0.5)',
       zerolinewidth: 2
     },
     yaxis: {
@@ -84,7 +96,6 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
       zerolinecolor: theme.zerolinecolor
     },
     shapes: [
-      // Vertical line marker at ITE = 0
       {
         type: 'line',
         x0: 0,
@@ -92,35 +103,20 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
         y0: 0,
         y1: 1,
         yref: 'paper',
-        line: { color: '#f43f5e', width: 2, dash: 'dashdot' }
-      }
-    ],
-    annotations: [
-      {
-        x: 0,
-        y: 1,
-        yref: 'paper',
-        text: 'Zero Effect Boundary',
-        showarrow: false,
-        font: { size: 10, color: '#f43f5e' },
-        xanchor: 'center',
-        yanchor: 'bottom'
+        line: { color: '#ef4444', width: 1.5, dash: 'dash' }
       }
     ]
   };
 
   const config = {
     responsive: true,
-    displayModeBar: true,
-    displaylogo: false,
-    modeBarButtonsToRemove: ['lasso2d', 'select2d']
+    displayModeBar: false
   };
 
   if (isLoading) {
     return (
-      <div className="card-panel" style={{ minHeight: 440, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="panel-card" style={{ minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-          <div className="status-indicator-dot" style={{ display: 'inline-block', marginBottom: '1rem', width: 14, height: 14 }} />
           <div>Computing ITE Distribution...</div>
         </div>
       </div>
@@ -129,12 +125,12 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
 
   if (!iteScores || iteScores.length === 0) {
     return (
-      <div className="card-panel" style={{ minHeight: 440, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="panel-card" style={{ minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', maxWidth: 400 }}>
-          <Info size={36} color="var(--primary-light)" style={{ marginBottom: '1rem' }} />
+          <Info size={36} color="var(--primary)" style={{ marginBottom: '1rem' }} />
           <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>No ITE Score Data</h4>
           <p style={{ fontSize: '0.86rem' }}>
-            Upload customer data or ensure <code>mock_ite.json</code> / <code>ite_scores.csv</code> is available.
+            Upload customer dataset or ensure model scoring pipeline has run.
           </p>
         </div>
       </div>
@@ -142,83 +138,73 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
   }
 
   return (
-    <div className="panel-card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div className="panel-card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header (Reference 1 Score Distribution style) */}
-      <div className="panel-card-header">
+      <div className="panel-card-header" style={{ marginBottom: '0.5rem' }}>
         <div>
           <h3 className="panel-card-title">
             <BarChart3 size={17} color="var(--primary)" />
             <span>Score Distribution</span>
           </h3>
           <p className="panel-card-sub">
-            Individual Treatment Effect (ITE) distribution across {stats?.total.toLocaleString()} customers
+            Individual Treatment Effect (ITE) spread across {stats?.total.toLocaleString()} customers
           </p>
         </div>
 
         {stats && (
-          <div style={{ fontSize: '0.74rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-            Median: <strong style={{ color: 'var(--text-primary)' }}>${stats.median}</strong> | Mean: <strong style={{ color: 'var(--text-primary)' }}>${stats.mean}</strong> | Max: <strong style={{ color: 'var(--text-primary)' }}>${stats.max}</strong>
+          <div style={{ 
+            fontSize: '0.74rem', 
+            fontFamily: 'var(--font-mono)', 
+            backgroundColor: 'var(--bg-card-subtle)',
+            padding: '0.3rem 0.65rem',
+            borderRadius: 'var(--radius-xs)',
+            border: '1px solid var(--border-card)',
+            color: 'var(--text-secondary)'
+          }}>
+            Median <strong style={{ color: 'var(--text-primary)' }}>${stats.median}</strong> │ Mean <strong style={{ color: 'var(--text-primary)' }}>${stats.mean}</strong> │ P90 <strong style={{ color: 'var(--text-primary)' }}>${stats.p90}</strong>
           </div>
         )}
       </div>
 
-      {/* KPI Stats */}
-      {stats && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.75rem', margin: '1rem 0' }}>
-          <div style={{ padding: '0.65rem 0.85rem', background: 'rgba(8, 12, 20, 0.45)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Mean ITE</div>
-            <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)' }}>+${stats.mean}</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Std Dev: ${stats.stdDev}</div>
-          </div>
-
-          <div style={{ padding: '0.65rem 0.85rem', background: 'rgba(8, 12, 20, 0.45)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Median ITE</div>
-            <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)' }}>+${stats.median}</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Range: [${stats.min}, ${stats.max}]</div>
-          </div>
-
-          <div style={{ padding: '0.65rem 0.85rem', background: 'rgba(16, 185, 129, 0.08)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--emerald-border)' }}>
-            <div style={{ fontSize: '0.7rem', color: '#6ee7b7', textTransform: 'uppercase' }}>Persuadables (ITE &gt; $10)</div>
-            <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#34d399' }}>{stats.persuadables}</div>
-            <div style={{ fontSize: '0.7rem', color: '#a7f3d0' }}>{stats.persuadablesPct}% of customer base</div>
-          </div>
-
-          <div style={{ padding: '0.65rem 0.85rem', background: 'rgba(244, 63, 94, 0.08)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--rose-border)' }}>
-            <div style={{ fontSize: '0.7rem', color: '#fca5a5', textTransform: 'uppercase' }}>Sleeping Dogs (ITE &lt; 0)</div>
-            <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fb7185' }}>{stats.sleepingDogs}</div>
-            <div style={{ fontSize: '0.7rem', color: '#fecdd3' }}>{stats.sleepingDogsPct}% negative responders</div>
-          </div>
-        </div>
-      )}
-
-      {/* Plot */}
-      <div style={{ width: '100%', height: 350, marginTop: '0.5rem' }}>
+      {/* Plotly Canvas */}
+      <div style={{ width: '100%', height: 330 }}>
         <Plot
           data={traces}
-          layout={{ ...layout, height: 350 }}
+          layout={layout}
           config={config}
           style={{ width: '100%', height: '100%' }}
           useResizeHandler={true}
         />
       </div>
 
-      {/* Reference 1 Score Distribution Legend */}
-      {stats && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.25rem', marginTop: '0.75rem', paddingTop: '0.65rem', borderTop: '1px solid var(--border-subtle)', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.76rem' }}>
-            <span style={{ width: 9, height: 9, borderRadius: 2, backgroundColor: '#10b981' }} />
-            <span style={{ fontWeight: 600 }}>Hot (Persuadables): {stats.persuadablesPct}%</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.76rem' }}>
-            <span style={{ width: 9, height: 9, borderRadius: 2, backgroundColor: '#6366f1' }} />
-            <span style={{ fontWeight: 600 }}>Neutral (Sure Things): {((stats.moderatePositive / stats.total) * 100).toFixed(1)}%</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.76rem' }}>
-            <span style={{ width: 9, height: 9, borderRadius: 2, backgroundColor: '#f43f5e' }} />
-            <span style={{ fontWeight: 600 }}>Cold (Sleeping Dogs): {stats.sleepingDogsPct}%</span>
-          </div>
+      {/* Reference 1 bottom segmented pill legend */}
+      <div style={{ 
+        marginTop: '0.5rem', 
+        paddingTop: '0.65rem', 
+        borderTop: '1px solid var(--border-subtle)', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '0.5rem',
+        fontSize: '0.74rem'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+          <span className="status-badge status-badge-green" style={{ fontSize: '0.72rem', padding: '1px 6px' }}>
+            ● Hot / Persuadables {stats?.persuadablesPct || 0}%
+          </span>
+          <span className="status-badge" style={{ fontSize: '0.72rem', padding: '1px 6px', color: 'var(--amber-text)', borderColor: 'var(--amber-border)', backgroundColor: 'var(--amber-subtle)' }}>
+            ● Neutral {stats?.moderatePositivePct || 0}%
+          </span>
+          <span className="status-badge" style={{ fontSize: '0.72rem', padding: '1px 6px', color: 'var(--rose-text)', borderColor: 'var(--rose-border)', backgroundColor: 'var(--rose-subtle)' }}>
+            ● Sleeping Dogs {stats?.sleepingDogsPct || 0}%
+          </span>
         </div>
-      )}
+
+        <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+          {stats?.total.toLocaleString()} scored
+        </span>
+      </div>
     </div>
   );
 }

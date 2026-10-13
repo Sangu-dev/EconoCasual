@@ -95,9 +95,13 @@ export default function AllocationCharts({
     autosize: true,
     height: 340,
     margin: { l: 65, r: 25, t: 25, b: 55 },
-    paper_bgcolor: theme.paper_bgcolor,
-    plot_bgcolor: theme.plot_bgcolor,
-    font: theme.font,
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    font: {
+      family: 'Plus Jakarta Sans, sans-serif',
+      color: theme.font.color,
+      size: 11
+    },
     hoverlabel: theme.hoverlabel,
     xaxis: {
       showgrid: false,
@@ -116,7 +120,7 @@ export default function AllocationCharts({
       x: 0,
       y: 1.15,
       font: { color: theme.legend_font, size: 11 },
-      bgcolor: theme.legend_bg
+      bgcolor: 'rgba(0,0,0,0)'
     }
   };
 
@@ -127,9 +131,8 @@ export default function AllocationCharts({
 
   if (isLoading) {
     return (
-      <div className="card-panel" style={{ minHeight: 400, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="panel-card" style={{ minHeight: 400, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-          <div className="status-indicator-dot" style={{ display: 'inline-block', marginBottom: '1rem', width: 14, height: 14 }} />
           <div>Loading Budget Allocation Charts...</div>
         </div>
       </div>

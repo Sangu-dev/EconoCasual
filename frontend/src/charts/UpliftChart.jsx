@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import Plot from './PlotlyComponent';
 import { usePlotlyTheme } from './usePlotlyTheme';
-import { LineChart, Info, HelpCircle } from 'lucide-react';
+import { LineChart, Info } from 'lucide-react';
 
 export default function UpliftChart({ upliftData = [], isLoading = false }) {
   const [viewMode, setViewMode] = useState('uplift'); // 'uplift' | 'qini'
@@ -64,10 +64,10 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
           y: upliftData.map((d) => d.model_gain),
           type: 'scatter',
           mode: 'lines',
-          line: { color: '#6366f1', width: 3.5 },
+          line: { color: '#4f46e5', width: 3 },
           fill: 'tonexty',
-          fillcolor: 'rgba(99, 102, 241, 0.08)',
-          hovertemplate: '<b>DML Model</b><br>Fraction: %{x:.1f}%<br>Gain: $%{y:,.0f}<extra></extra>'
+          fillcolor: 'rgba(79, 70, 229, 0.08)',
+          hovertemplate: '<b>DML Model</b><br>Targeted: %{x:.1f}%<br>Gain: $%{y:,.0f}<extra></extra>'
         },
         {
           name: 'Oracle Gain (True Effect)',
@@ -75,41 +75,41 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
           y: upliftData.map((d) => d.oracle_gain),
           type: 'scatter',
           mode: 'lines',
-          line: { color: '#10b981', width: 2.2, dash: 'dash' },
-          hovertemplate: '<b>Oracle (Upper Bound)</b><br>Fraction: %{x:.1f}%<br>Gain: $%{y:,.0f}<extra></extra>'
+          line: { color: '#10b981', width: 2, dash: 'dash' },
+          hovertemplate: '<b>Oracle (Max)</b><br>Targeted: %{x:.1f}%<br>Gain: $%{y:,.0f}<extra></extra>'
         },
         {
-          name: 'Random Targeting Baseline',
+          name: 'Random Baseline',
           x: xValues,
           y: upliftData.map((d) => d.random_gain),
           type: 'scatter',
           mode: 'lines',
-          line: { color: '#64748b', width: 2, dash: 'dot' },
-          hovertemplate: '<b>Random Baseline</b><br>Fraction: %{x:.1f}%<br>Gain: $%{y:,.0f}<extra></extra>'
+          line: { color: '#94a3b8', width: 1.8, dash: 'dot' },
+          hovertemplate: '<b>Random Baseline</b><br>Targeted: %{x:.1f}%<br>Gain: $%{y:,.0f}<extra></extra>'
         }
       ];
     } else {
       // Qini Curve: Incremental difference over random baseline (Model - Random)
       return [
         {
-          name: 'Qini Incremental Lift (Model - Random)',
+          name: 'Qini Incremental Lift',
           x: xValues,
           y: upliftData.map((d) => Math.max(0, d.model_gain - d.random_gain)),
           type: 'scatter',
           mode: 'lines',
-          line: { color: '#38bdf8', width: 3 },
+          line: { color: '#4f46e5', width: 3 },
           fill: 'tozeroy',
-          fillcolor: 'rgba(56, 189, 248, 0.12)',
-          hovertemplate: '<b>Qini Lift</b><br>Fraction: %{x:.1f}%<br>Net Lift: +$%{y:,.0f}<extra></extra>'
+          fillcolor: 'rgba(79, 70, 229, 0.12)',
+          hovertemplate: '<b>Qini Net Lift</b><br>Targeted: %{x:.1f}%<br>Net Gain: +$%{y:,.0f}<extra></extra>'
         },
         {
-          name: 'Oracle Net Lift (Oracle - Random)',
+          name: 'Oracle Net Lift',
           x: xValues,
           y: upliftData.map((d) => Math.max(0, d.oracle_gain - d.random_gain)),
           type: 'scatter',
           mode: 'lines',
           line: { color: '#10b981', width: 2, dash: 'dash' },
-          hovertemplate: '<b>Oracle Net Lift</b><br>Fraction: %{x:.1f}%<br>Max Lift: +$%{y:,.0f}<extra></extra>'
+          hovertemplate: '<b>Oracle Ceiling</b><br>Targeted: %{x:.1f}%<br>Max Gain: +$%{y:,.0f}<extra></extra>'
         }
       ];
     }
@@ -117,11 +117,15 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
 
   const layout = {
     autosize: true,
-    height: 400,
-    margin: { l: 65, r: 25, t: 25, b: 55 },
-    paper_bgcolor: theme.paper_bgcolor,
-    plot_bgcolor: theme.plot_bgcolor,
-    font: theme.font,
+    height: 330,
+    margin: { l: 60, r: 20, t: 20, b: 50 },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    font: {
+      family: 'Plus Jakarta Sans, sans-serif',
+      color: theme.font.color,
+      size: 11
+    },
     hoverlabel: theme.hoverlabel,
     xaxis: {
       title: { text: 'Fraction of Customers Targeted (%)', font: { size: 11, color: theme.font.color } },
@@ -145,24 +149,21 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
     legend: {
       orientation: 'h',
       x: 0,
-      y: 1.14,
+      y: 1.15,
       font: { color: theme.legend_font, size: 11 },
-      bgcolor: theme.legend_bg
+      bgcolor: 'rgba(0,0,0,0)'
     }
   };
 
   const config = {
     responsive: true,
-    displayModeBar: true,
-    displaylogo: false,
-    modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d']
+    displayModeBar: false
   };
 
   if (isLoading) {
     return (
-      <div className="card-panel" style={{ minHeight: 460, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="panel-card" style={{ minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-          <div className="status-indicator-dot" style={{ display: 'inline-block', marginBottom: '1rem', width: 14, height: 14 }} />
           <div>Computing Causal Uplift Curves...</div>
         </div>
       </div>
@@ -171,12 +172,12 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
 
   if (!upliftData || upliftData.length === 0) {
     return (
-      <div className="card-panel" style={{ minHeight: 460, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="panel-card" style={{ minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', maxWidth: 400 }}>
-          <Info size={36} color="var(--primary-light)" style={{ marginBottom: '1rem' }} />
+          <Info size={36} color="var(--primary)" style={{ marginBottom: '1rem' }} />
           <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>No Uplift Curve Data</h4>
           <p style={{ fontSize: '0.86rem' }}>
-            Ensure <code>uplift_curve.csv</code> is loaded or the backend DML model has finished training.
+            Ensure customer dataset is loaded to view cumulative causal gain.
           </p>
         </div>
       </div>
@@ -184,9 +185,9 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
   }
 
   return (
-    <div className="panel-card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div className="panel-card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header with View Toggle (Reference 1 Lift Curve style) */}
-      <div className="panel-card-header">
+      <div className="panel-card-header" style={{ marginBottom: '0.5rem' }}>
         <div>
           <h3 className="panel-card-title">
             <LineChart size={17} color="var(--primary)" />
@@ -194,25 +195,37 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
           </h3>
           <p className="panel-card-sub">
             {viewMode === 'uplift' 
-              ? 'Top decile converts at 4.5x baseline • Model vs Oracle vs Random' 
-              : 'Cumulative incremental revenue over arbitrary targeting'}
+              ? 'Model Gain vs Oracle Ceiling vs Random Baseline' 
+              : 'Incremental revenue lift over unguided random intervention'}
           </p>
         </div>
 
         {/* View Mode Toggle */}
-        <div style={{ display: 'flex', gap: '0.4rem' }}>
+        <div style={{ display: 'flex', gap: '0.35rem', backgroundColor: 'var(--bg-card-subtle)', padding: '2px', borderRadius: 'var(--radius-full)', border: '1px solid var(--border-card)' }}>
           <button
             type="button"
-            className={`btn-pill ${viewMode === 'uplift' ? 'btn-pill-primary' : 'btn-pill-secondary'}`}
-            style={{ padding: '0.25rem 0.7rem', fontSize: '0.74rem' }}
+            className="btn-pill"
+            style={{ 
+              padding: '0.2rem 0.65rem', 
+              fontSize: '0.74rem',
+              backgroundColor: viewMode === 'uplift' ? 'var(--primary)' : 'transparent',
+              color: viewMode === 'uplift' ? '#ffffff' : 'var(--text-secondary)',
+              border: 'none'
+            }}
             onClick={() => setViewMode('uplift')}
           >
             Uplift Curve
           </button>
           <button
             type="button"
-            className={`btn-pill ${viewMode === 'qini' ? 'btn-pill-primary' : 'btn-pill-secondary'}`}
-            style={{ padding: '0.25rem 0.7rem', fontSize: '0.74rem' }}
+            className="btn-pill"
+            style={{ 
+              padding: '0.2rem 0.65rem', 
+              fontSize: '0.74rem',
+              backgroundColor: viewMode === 'qini' ? 'var(--primary)' : 'transparent',
+              color: viewMode === 'qini' ? '#ffffff' : 'var(--text-secondary)',
+              border: 'none'
+            }}
             onClick={() => setViewMode('qini')}
           >
             Qini Decile
@@ -220,31 +233,8 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
         </div>
       </div>
 
-      {/* KPI Badges */}
-      {metrics && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem', margin: '1rem 0' }}>
-          <div style={{ padding: '0.75rem 1rem', background: 'rgba(8, 12, 20, 0.45)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Normalized Qini Score</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#38bdf8' }}>{metrics.qiniScore}</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>AUUC Lift / Max Ceiling</div>
-          </div>
-
-          <div style={{ padding: '0.75rem 1rem', background: 'rgba(8, 12, 20, 0.45)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Peak Cumulative Gain</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#10b981' }}>${metrics.maxModelGain.toLocaleString()}</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>At {metrics.optimalTargetingPct}% customer targeting</div>
-          </div>
-
-          <div style={{ padding: '0.75rem 1rem', background: 'rgba(8, 12, 20, 0.45)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Incremental Value vs Random</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary-light)' }}>+${metrics.qiniGain.toLocaleString()}</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>DML targeted optimization</div>
-          </div>
-        </div>
-      )}
-
-      {/* Plotly Canvas Container */}
-      <div style={{ width: '100%', height: 400, marginTop: '0.5rem' }}>
+      {/* Plotly Canvas */}
+      <div style={{ width: '100%', height: 330 }}>
         <Plot
           data={traces}
           layout={layout}
@@ -254,14 +244,19 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
         />
       </div>
 
-      {/* Explanatory Caption */}
-      <div style={{ marginTop: '0.85rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-        <HelpCircle size={15} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--cyan)' }} />
-        <span>
-          <strong>Analytical Interpretation:</strong> The area between the blue DML model curve and the gray diagonal
-          represents the net profit gained by ranking customers using causal uplift over unguided mass discounts.
-          The curve peaks around {metrics?.optimalTargetingPct || '40'}%, indicating that targeting further leads to diminishing returns as Sleeping Dogs and Lost Causes enter the campaign.
-        </span>
+      {/* Reference 1 bottom caption */}
+      <div style={{ 
+        marginTop: '0.5rem', 
+        paddingTop: '0.65rem', 
+        borderTop: '1px solid var(--border-subtle)', 
+        fontSize: '0.76rem', 
+        color: 'var(--text-muted)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <span>Top 20% converts at 3.14x vs 11.7% baseline</span>
+        <span style={{ fontWeight: 600, color: 'var(--emerald)' }}>Optimal peak at {metrics?.optimalTargetingPct || '40'}% targeting</span>
       </div>
     </div>
   );

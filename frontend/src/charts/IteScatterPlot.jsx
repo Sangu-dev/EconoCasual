@@ -134,11 +134,15 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
 
   const layout = {
     autosize: true,
-    height: 420,
+    height: 380,
     margin: { l: 65, r: 25, t: 25, b: 55 },
-    paper_bgcolor: theme.paper_bgcolor,
-    plot_bgcolor: theme.plot_bgcolor,
-    font: theme.font,
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    font: {
+      family: 'Plus Jakarta Sans, sans-serif',
+      color: theme.font.color,
+      size: 11
+    },
     hoverlabel: theme.hoverlabel,
     xaxis: {
       title: { text: activeOption?.label || featureKey, font: { size: 11, color: theme.font.color } },
@@ -159,22 +163,19 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
       x: 0,
       y: 1.12,
       font: { color: theme.legend_font, size: 11 },
-      bgcolor: theme.legend_bg
+      bgcolor: 'rgba(0,0,0,0)'
     }
   };
 
   const config = {
     responsive: true,
-    displayModeBar: true,
-    displaylogo: false,
-    modeBarButtonsToRemove: ['lasso2d', 'select2d']
+    displayModeBar: false
   };
 
   if (isLoading) {
     return (
-      <div className="card-panel" style={{ minHeight: 480, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="panel-card" style={{ minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-          <div className="status-indicator-dot" style={{ display: 'inline-block', marginBottom: '1rem', width: 14, height: 14 }} />
           <div>Rendering WebGL Scatter Plot...</div>
         </div>
       </div>
@@ -183,7 +184,7 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
 
   if (!iteScores || iteScores.length === 0) {
     return (
-      <div className="card-panel" style={{ minHeight: 480, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="panel-card" style={{ minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', maxWidth: 400 }}>
           <Info size={36} color="var(--primary-light)" style={{ marginBottom: '1rem' }} />
           <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>No Feature Data Available</h4>

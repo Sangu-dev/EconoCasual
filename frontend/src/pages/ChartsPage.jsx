@@ -193,68 +193,79 @@ export default function ChartsPage() {
         </div>
       </div>
 
-      {/* Cohort Filter Strip */}
-      <div className="panel-card" style={{ padding: '0.85rem 1.25rem', marginBottom: '1.25rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.84rem', fontWeight: 600 }}>
-            <Filter size={15} color="var(--primary)" />
-            <span>Interactive Cohort Filters:</span>
-            <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.78rem' }}>
-              Showing {filteredIteScores.length.toLocaleString()} of {iteScores.length.toLocaleString()} records
-            </span>
+      {/* Cohort Filter Toolbar */}
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between', 
+        flexWrap: 'wrap', 
+        gap: '0.75rem',
+        padding: '0.65rem 1rem',
+        backgroundColor: 'var(--bg-card)',
+        borderRadius: 'var(--radius-sm)',
+        border: '1px solid var(--border-card)',
+        marginBottom: '1.25rem',
+        boxShadow: 'var(--shadow-card)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', fontWeight: 600 }}>
+          <Filter size={14} color="var(--primary)" />
+          <span>Cohort Filter:</span>
+          <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.76rem' }}>
+            Showing {filteredIteScores.length.toLocaleString()} of {iteScores.length.toLocaleString()} customer records
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem' }}>
+            <span style={{ color: 'var(--text-muted)' }}>Segment:</span>
+            <select
+              value={filterSegment}
+              onChange={(e) => setFilterSegment(e.target.value)}
+              style={{
+                padding: '0.2rem 0.5rem',
+                borderRadius: 'var(--radius-xs)',
+                border: '1px solid var(--border-card)',
+                backgroundColor: 'var(--bg-card-subtle)',
+                color: 'var(--text-primary)',
+                fontSize: '0.78rem',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="all">All Segments</option>
+              <option value="Persuadables">Persuadables (ITE &gt; $10)</option>
+              <option value="High-Value Loyal">High-Value Loyal ($5 - $10)</option>
+              <option value="Sure Things">Sure Things ($0 - $5)</option>
+              <option value="Sleeping Dogs">Sleeping Dogs (ITE &lt; 0)</option>
+            </select>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}>
-              <span style={{ color: 'var(--text-muted)' }}>Segment:</span>
-              <select
-                value={filterSegment}
-                onChange={(e) => setFilterSegment(e.target.value)}
-                style={{
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: 'var(--radius-xs)',
-                  border: '1px solid var(--border-card)',
-                  background: 'var(--bg-card)',
-                  color: 'var(--text-primary)',
-                  fontSize: '0.8rem'
-                }}
-              >
-                <option value="all">All Segments</option>
-                <option value="Persuadables">Persuadables (ITE &gt; $10)</option>
-                <option value="High-Value Loyal">High-Value Loyal ($5 - $10)</option>
-                <option value="Sure Things">Sure Things ($0 - $5)</option>
-                <option value="Sleeping Dogs">Sleeping Dogs (ITE &lt; 0)</option>
-              </select>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem' }}>
-              <span style={{ color: 'var(--text-muted)' }}>Min Loyalty:</span>
-              <span style={{ fontWeight: 700, color: 'var(--primary)' }}>{filterMinLoyalty}</span>
-              <input
-                type="range"
-                min="0"
-                max="8"
-                step="0.5"
-                value={filterMinLoyalty}
-                onChange={(e) => setFilterMinLoyalty(Number(e.target.value))}
-                style={{ width: 90, accentColor: 'var(--primary)' }}
-              />
-            </div>
-
-            {(filterSegment !== 'all' || filterMinLoyalty > 0) && (
-              <button
-                type="button"
-                className="btn-pill btn-pill-secondary"
-                style={{ padding: '0.2rem 0.55rem', fontSize: '0.74rem' }}
-                onClick={() => {
-                  setFilterSegment('all');
-                  setFilterMinLoyalty(0);
-                }}
-              >
-                Reset Filters
-              </button>
-            )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem' }}>
+            <span style={{ color: 'var(--text-muted)' }}>Min Loyalty:</span>
+            <span style={{ fontWeight: 700, color: 'var(--primary)', fontFamily: 'var(--font-mono)' }}>{filterMinLoyalty}</span>
+            <input
+              type="range"
+              min="0"
+              max="8"
+              step="0.5"
+              value={filterMinLoyalty}
+              onChange={(e) => setFilterMinLoyalty(Number(e.target.value))}
+              style={{ width: 80, accentColor: 'var(--primary)' }}
+            />
           </div>
+
+          {(filterSegment !== 'all' || filterMinLoyalty > 0) && (
+            <button
+              type="button"
+              className="btn-pill btn-pill-secondary"
+              style={{ padding: '0.15rem 0.5rem', fontSize: '0.72rem' }}
+              onClick={() => {
+                setFilterSegment('all');
+                setFilterMinLoyalty(0);
+              }}
+            >
+              Reset
+            </button>
+          )}
         </div>
       </div>
 
