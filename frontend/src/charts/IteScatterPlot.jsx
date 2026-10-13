@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import Plot from './PlotlyComponent';
 import { usePlotlyTheme } from './usePlotlyTheme';
-import { ScatterChart, Zap, HelpCircle, Info } from 'lucide-react';
+import { ScatterChart, Zap, Info } from 'lucide-react';
 
 export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
   const [featureKey, setFeatureKey] = useState('loyalty_score');
@@ -55,7 +55,6 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
   const traces = useMemo(() => {
     if (!iteScores || iteScores.length === 0) return [];
 
-    // Segregate into segments for clear visual clarity
     const persuadables = { x: [], y: [], text: [] };
     const regulars = { x: [], y: [], text: [] };
     const sleepingDogs = { x: [], y: [], text: [] };
@@ -66,7 +65,7 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
       if (isNaN(xVal) || isNaN(yVal)) return;
 
       const customerId = row.customer_id || 'Unknown';
-      const tooltip = `<b>${customerId}</b><br>${featureKey}: ${xVal.toFixed(2)}<br>ITE: $${yVal.toFixed(2)}`;
+      const tooltip = `<b>${customerId}</b><br>${featureKey}: ${xVal.toFixed(2)}<br>ITE Lift: $${yVal.toFixed(2)}`;
 
       if (yVal > 10) {
         persuadables.x.push(xVal);
@@ -94,8 +93,8 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
         marker: {
           color: '#10b981',
           size: 6,
-          opacity: 0.75,
-          line: { color: 'rgba(255, 255, 255, 0.2)', width: 0.5 }
+          opacity: 0.8,
+          line: { color: 'rgba(255, 255, 255, 0.4)', width: 0.5 }
         },
         hoverinfo: 'text'
       },
@@ -108,8 +107,9 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
         mode: 'markers',
         marker: {
           color: '#6366f1',
-          size: 5,
-          opacity: 0.65
+          size: 5.5,
+          opacity: 0.7,
+          line: { color: 'rgba(255, 255, 255, 0.4)', width: 0.5 }
         },
         hoverinfo: 'text'
       },
@@ -121,9 +121,10 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
         type: 'scattergl', // WebGL GPU accelerated
         mode: 'markers',
         marker: {
-          color: '#f43f5e',
+          color: '#ef4444',
           size: 6,
-          opacity: 0.8
+          opacity: 0.85,
+          line: { color: 'rgba(255, 255, 255, 0.4)', width: 0.5 }
         },
         hoverinfo: 'text'
       }
@@ -134,8 +135,8 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
 
   const layout = {
     autosize: true,
-    height: 380,
-    margin: { l: 65, r: 25, t: 25, b: 55 },
+    height: 360,
+    margin: { l: 60, r: 20, t: 25, b: 50 },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
     font: {
@@ -155,13 +156,13 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
       tickprefix: '$',
       showgrid: true,
       gridcolor: theme.gridcolor,
-      zerolinecolor: 'rgba(244, 63, 94, 0.4)',
+      zerolinecolor: 'rgba(239, 68, 68, 0.4)',
       zerolinewidth: 1.5
     },
     legend: {
       orientation: 'h',
       x: 0,
-      y: 1.12,
+      y: 1.14,
       font: { color: theme.legend_font, size: 11 },
       bgcolor: 'rgba(0,0,0,0)'
     }
@@ -174,7 +175,7 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
 
   if (isLoading) {
     return (
-      <div className="panel-card" style={{ minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="panel-card" style={{ minHeight: 360, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
           <div>Rendering WebGL Scatter Plot...</div>
         </div>
@@ -184,12 +185,12 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
 
   if (!iteScores || iteScores.length === 0) {
     return (
-      <div className="panel-card" style={{ minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="panel-card" style={{ minHeight: 360, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', maxWidth: 400 }}>
-          <Info size={36} color="var(--primary-light)" style={{ marginBottom: '1rem' }} />
+          <Info size={36} color="var(--primary)" style={{ marginBottom: '1rem' }} />
           <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>No Feature Data Available</h4>
           <p style={{ fontSize: '0.86rem' }}>
-            Upload a CSV containing customer features or ensure <code>mock_ite.json</code> is accessible.
+            Load customer dataset to evaluate individual feature heterogeneity.
           </p>
         </div>
       </div>
@@ -197,25 +198,35 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
   }
 
   return (
-    <div className="card-panel">
+    <div className="panel-card" style={{ marginTop: '1.25rem' }}>
       {/* Header with Feature Selector and WebGL Badge */}
-      <div className="card-header-row" style={{ flexWrap: 'wrap', gap: '1rem' }}>
+      <div className="panel-card-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 'var(--radius-md)', background: 'rgba(56, 189, 248, 0.15)', color: 'var(--cyan)' }}>
-            <ScatterChart size={20} />
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            width: 34, 
+            height: 34, 
+            borderRadius: 'var(--radius-sm)', 
+            backgroundColor: 'var(--primary-subtle)', 
+            color: 'var(--primary)',
+            flexShrink: 0
+          }}>
+            <ScatterChart size={18} />
           </div>
           <div>
-            <h3 className="card-heading">ITE Feature Correlation (WebGL)</h3>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-              Testing feature effect heterogeneity across {iteScores.length.toLocaleString()} customer records
+            <h3 className="panel-card-title">ITE Feature Heterogeneity & WebGL Inspector</h3>
+            <p className="panel-card-sub">
+              Testing causal treatment effect variation across {iteScores.length.toLocaleString()} customer records
             </p>
           </div>
         </div>
 
         {/* Feature Selector & WebGL Badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div className="status-pill" style={{ borderColor: 'rgba(56, 189, 248, 0.4)', color: 'var(--cyan)' }}>
-            <Zap size={13} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <div className="status-badge status-badge-green" style={{ fontSize: '0.74rem' }}>
+            <Zap size={12} />
             <span>WebGL scattergl Active</span>
           </div>
 
@@ -223,13 +234,14 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
             value={featureKey}
             onChange={(e) => setFeatureKey(e.target.value)}
             style={{
-              padding: '0.45rem 0.85rem',
-              background: 'var(--bg-secondary)',
+              padding: '0.35rem 0.75rem',
+              backgroundColor: 'var(--bg-card-subtle)',
               color: 'var(--text-primary)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--border-card)',
+              borderRadius: 'var(--radius-xs)',
               fontFamily: 'var(--font-sans)',
-              fontSize: '0.82rem',
+              fontSize: '0.8rem',
+              fontWeight: 600,
               cursor: 'pointer'
             }}
           >
@@ -242,30 +254,56 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
         </div>
       </div>
 
-      {/* Correlation Metric Banner */}
+      {/* Clean High-Contrast Correlation Metric Banner */}
       {analysis && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', padding: '0.75rem 1rem', background: 'rgba(8, 12, 20, 0.45)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', margin: '1rem 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          flexWrap: 'wrap', 
+          gap: '1rem', 
+          padding: '0.75rem 1.15rem', 
+          backgroundColor: 'var(--bg-card-subtle)', 
+          borderRadius: 'var(--radius-sm)', 
+          border: '1px solid var(--border-card)', 
+          borderLeft: '4px solid var(--primary)',
+          margin: '0.85rem 0 1rem' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.75rem', flexWrap: 'wrap' }}>
             <div>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Pearson Correlation (r): </span>
-              <strong style={{ fontSize: '0.95rem', color: Number(analysis.correlation) > 0 ? '#10b981' : '#f43f5e' }}>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Pearson Correlation (r):
+              </span>
+              <span style={{ marginLeft: '0.45rem', fontFamily: 'var(--font-mono)', fontSize: '1rem', fontWeight: 800, color: Number(analysis.correlation) > 0 ? 'var(--emerald)' : 'var(--rose)' }}>
                 {analysis.correlation}
-              </strong>
+              </span>
             </div>
             <div>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Relationship: </span>
-              <strong style={{ fontSize: '0.92rem', color: 'var(--text-primary)' }}>{analysis.strength}</strong>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Relationship:
+              </span>
+              <span style={{ marginLeft: '0.45rem', fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                {analysis.strength} Positive
+              </span>
             </div>
             <div>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Sample Size: </span>
-              <span style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>{analysis.count.toLocaleString()} data points</span>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Sample Size:
+              </span>
+              <span style={{ marginLeft: '0.45rem', fontFamily: 'var(--font-mono)', fontSize: '0.84rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                {analysis.count.toLocaleString()} customer data points
+              </span>
             </div>
           </div>
+
+          <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+            Higher values indicate strong treatment sensitivity
+          </span>
         </div>
       )}
 
       {/* Plotly Canvas Container */}
-      <div style={{ width: '100%', height: 420 }}>
+      <div style={{ width: '100%', height: 360 }}>
         <Plot
           data={traces}
           layout={layout}
@@ -275,13 +313,22 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
         />
       </div>
 
-      {/* Explanatory Caption */}
-      <div style={{ marginTop: '0.85rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-        <HelpCircle size={15} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--cyan)' }} />
+      {/* Explanatory Caption Footer */}
+      <div style={{ 
+        marginTop: '0.65rem', 
+        paddingTop: '0.65rem', 
+        borderTop: '1px solid var(--border-subtle)', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between',
+        fontSize: '0.76rem', 
+        color: 'var(--text-muted)' 
+      }}>
         <span>
-          <strong>GPU-Accelerated Performance:</strong> This chart renders via WebGL (<code>type: 'scattergl'</code>).
-          Unlike DOM-based SVG that stutters beyond a few thousand elements, WebGL handles 50,000+ points at 60 FPS.
-          Notice how customer loyalty influences treatment sensitivity—high loyalty customers often show higher treatment responsiveness.
+          GPU-accelerated WebGL engine (<code>type: 'scattergl'</code>) handles up to 50,000+ points at 60 FPS without DOM lag.
+        </span>
+        <span style={{ fontWeight: 600, color: 'var(--primary)' }}>
+          Active Feature: {activeOption?.label}
         </span>
       </div>
     </div>

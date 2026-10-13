@@ -347,10 +347,10 @@ export default function ChartsPage() {
             </tbody>
           </table>
         </div>
-
-        {/* WebGL GPU Scatter Plot below feature table */}
-        <IteScatterPlot iteScores={filteredIteScores} isLoading={isLoading} />
       </div>
+
+      {/* WebGL GPU Scatter Plot below feature table */}
+      <IteScatterPlot iteScores={filteredIteScores} isLoading={isLoading} />
     </div>
   );
 }
