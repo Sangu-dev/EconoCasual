@@ -6,3 +6,4 @@ venv/
 node_modules/
 dist/
 .env
+frontend/public/mock_ite_big.json
