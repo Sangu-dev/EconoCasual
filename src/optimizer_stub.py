@@ -2,9 +2,6 @@ import numpy as np
 import pandas as pd
 
 
-import numpy as np
-import pandas as pd
-
 
 def greedy_optimizer(ite_df: pd.DataFrame, budget: float, cost: float) -> pd.DataFrame:
     gain = ite_df["ite"].to_numpy() - cost               # expected revenue uplift minus cost of the discount
