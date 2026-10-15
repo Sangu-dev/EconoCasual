@@ -1,0 +1,151 @@
+customer_id,discount_amount,expected_gain,segment
+CUST_0001,10.00,12.06,High-Value Loyal
+CUST_0002,0.00,2.31,Sure Things
+CUST_0003,20.00,50.46,Persuadables
+CUST_0004,20.00,79.26,Persuadables
+CUST_0005,20.00,54.98,Persuadables
+CUST_0006,20.00,96.51,Persuadables
+CUST_0007,10.00,20.83,High-Value Loyal
+CUST_0008,20.00,61.60,Persuadables
+CUST_0009,20.00,109.09,Persuadables
+CUST_0010,20.00,59.71,Persuadables
+CUST_0011,20.00,67.68,Persuadables
+CUST_0012,20.00,73.60,Persuadables
+CUST_0013,10.00,10.28,High-Value Loyal
+CUST_0014,20.00,94.85,Persuadables
+CUST_0015,20.00,42.34,Persuadables
+CUST_0016,20.00,80.86,Persuadables
+CUST_0017,20.00,58.91,Persuadables
+CUST_0018,20.00,58.69,Persuadables
+CUST_0019,20.00,67.62,Persuadables
+CUST_0020,20.00,50.66,Persuadables
+CUST_0021,20.00,118.56,Persuadables
+CUST_0022,20.00,54.27,Persuadables
+CUST_0023,0.00,2.50,Sure Things
+CUST_0024,20.00,96.10,Persuadables
+CUST_0025,20.00,109.22,Persuadables
+CUST_0026,10.00,20.92,High-Value Loyal
+CUST_0027,20.00,98.08,Persuadables
+CUST_0028,20.00,41.15,Persuadables
+CUST_0029,10.00,16.42,High-Value Loyal
+CUST_0030,20.00,92.42,Persuadables
+CUST_0031,10.00,10.96,High-Value Loyal
+CUST_0032,20.00,54.08,Persuadables
+CUST_0033,10.00,20.79,High-Value Loyal
+CUST_0034,20.00,98.40,Persuadables
+CUST_0035,20.00,53.60,Persuadables
+CUST_0036,20.00,75.14,Persuadables
+CUST_0037,20.00,111.87,Persuadables
+CUST_0038,20.00,46.82,Persuadables
+CUST_0039,10.00,19.51,High-Value Loyal
+CUST_0040,10.00,20.56,High-Value Loyal
+CUST_0041,20.00,90.05,Persuadables
+CUST_0042,10.00,11.86,High-Value Loyal
+CUST_0043,20.00,40.38,Persuadables
+CUST_0044,10.00,17.28,High-Value Loyal
+CUST_0045,20.00,67.90,Persuadables
+CUST_0046,20.00,107.26,Persuadables
+CUST_0047,20.00,113.50,Persuadables
+CUST_0048,10.00,14.04,High-Value Loyal
+CUST_0049,20.00,114.59,Persuadables
+CUST_0050,10.00,16.54,High-Value Loyal
+CUST_0051,20.00,92.77,Persuadables
+CUST_0052,20.00,64.26,Persuadables
+CUST_0053,20.00,97.95,Persuadables
+CUST_0054,20.00,41.98,Persuadables
+CUST_0055,20.00,61.41,Persuadables
+CUST_0056,20.00,119.30,Persuadables
+CUST_0057,20.00,81.09,Persuadables
+CUST_0058,20.00,126.91,Persuadables
+CUST_0059,20.00,90.02,Persuadables
+CUST_0060,10.00,11.50,High-Value Loyal
+CUST_0061,20.00,49.25,Persuadables
+CUST_0062,20.00,92.19,Persuadables
+CUST_0063,20.00,104.00,Persuadables
+CUST_0064,20.00,112.83,Persuadables
+CUST_0065,20.00,80.80,Persuadables
+CUST_0066,20.00,51.30,Persuadables
+CUST_0067,20.00,88.42,Persuadables
+CUST_0068,20.00,71.65,Persuadables
+CUST_0069,20.00,74.66,Persuadables
+CUST_0070,20.00,75.58,Persuadables
+CUST_0071,20.00,92.58,Persuadables
+CUST_0072,20.00,71.97,Persuadables
+CUST_0073,10.00,10.87,High-Value Loyal
+CUST_0074,20.00,46.69,Persuadables
+CUST_0075,10.00,20.66,High-Value Loyal
+CUST_0076,10.00,21.47,High-Value Loyal
+CUST_0077,20.00,71.46,Persuadables
+CUST_0078,0.00,0.99,Sure Things
+CUST_0079,20.00,93.47,Persuadables
+CUST_0080,20.00,89.34,Persuadables
+CUST_0081,20.00,85.79,Persuadables
+CUST_0082,20.00,57.31,Persuadables
+CUST_0083,20.00,50.40,Persuadables
+CUST_0084,10.00,13.25,High-Value Loyal
+CUST_0085,20.00,67.36,Persuadables
+CUST_0086,0.00,1.75,Sure Things
+CUST_0087,20.00,85.09,Persuadables
+CUST_0088,20.00,42.14,Persuadables
+CUST_0089,20.00,69.28,Persuadables
+CUST_0090,0.00,1.24,Sure Things
+CUST_0091,20.00,92.93,Persuadables
+CUST_0092,20.00,47.68,Persuadables
+CUST_0093,20.00,54.21,Persuadables
+CUST_0094,20.00,93.41,Persuadables
+CUST_0095,20.00,104.32,Persuadables
+CUST_0096,20.00,81.66,Persuadables
+CUST_0097,20.00,79.01,Persuadables
+CUST_0098,20.00,81.79,Persuadables
+CUST_0099,20.00,87.01,Persuadables
+CUST_0100,20.00,106.05,Persuadables
+CUST_0101,20.00,39.94,Persuadables
+CUST_0102,20.00,68.74,Persuadables
+CUST_0103,20.00,60.10,Persuadables
+CUST_0104,20.00,49.38,Persuadables
+CUST_0105,20.00,51.68,Persuadables
+CUST_0106,20.00,72.32,Persuadables
+CUST_0107,20.00,74.62,Persuadables
+CUST_0108,20.00,60.03,Persuadables
+CUST_0109,20.00,74.05,Persuadables
+CUST_0110,20.00,58.11,Persuadables
+CUST_0111,0.00,2.27,Sure Things
+CUST_0112,20.00,96.06,Persuadables
+CUST_0113,20.00,72.26,Persuadables
+CUST_0114,10.00,16.51,High-Value Loyal
+CUST_0115,20.00,112.74,Persuadables
+CUST_0116,20.00,98.50,Persuadables
+CUST_0117,20.00,54.34,Persuadables
+CUST_0118,0.00,1.88,Sure Things
+CUST_0119,20.00,109.86,Persuadables
+CUST_0120,20.00,66.56,Persuadables
+CUST_0121,20.00,110.11,Persuadables
+CUST_0122,10.00,12.11,High-Value Loyal
+CUST_0123,20.00,50.11,Persuadables
+CUST_0124,20.00,63.74,Persuadables
+CUST_0125,20.00,61.02,Persuadables
+CUST_0126,10.00,18.47,High-Value Loyal
+CUST_0127,20.00,47.46,Persuadables
+CUST_0128,10.00,19.69,High-Value Loyal
+CUST_0129,20.00,65.28,Persuadables
+CUST_0130,10.00,15.37,High-Value Loyal
+CUST_0131,20.00,56.26,Persuadables
+CUST_0132,10.00,13.95,High-Value Loyal
+CUST_0133,20.00,118.43,Persuadables
+CUST_0134,10.00,19.73,High-Value Loyal
+CUST_0135,20.00,48.74,Persuadables
+CUST_0136,10.00,21.11,High-Value Loyal
+CUST_0137,20.00,88.77,Persuadables
+CUST_0138,20.00,72.10,Persuadables
+CUST_0139,20.00,60.51,Persuadables
+CUST_0140,10.00,18.63,High-Value Loyal
+CUST_0141,20.00,75.84,Persuadables
+CUST_0142,20.00,42.46,Persuadables
+CUST_0143,10.00,15.84,High-Value Loyal
+CUST_0144,20.00,88.26,Persuadables
+CUST_0145,20.00,87.46,Persuadables
+CUST_0146,20.00,69.25,Persuadables
+CUST_0147,20.00,44.99,Persuadables
+CUST_0148,10.00,15.70,High-Value Loyal
+CUST_0149,20.00,55.97,Persuadables
+CUST_0150,20.00,103.20,Persuadables
