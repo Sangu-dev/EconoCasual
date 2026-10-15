@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # EconoCausal
 
 > Causal Uplift Modeling and Budget Optimization via Double Machine Learning
@@ -81,6 +82,13 @@ npm run preview
 
 ---
 
+## Contributors
+
+- **Sangamesh Ragam** (Role C: Frontend Engineer)
+
+---
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
