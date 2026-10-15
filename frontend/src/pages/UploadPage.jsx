@@ -120,7 +120,7 @@ export default function UploadPage() {
                 {summary?.missingColumns && (
                   <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
                     {summary.missingColumns.map((col) => (
-                      <span key={col} style={{ background: '#ffffff', color: 'var(--rose)', border: '1px solid var(--rose-border)', padding: '2px 8px', borderRadius: 'var(--radius-xs)', fontSize: '0.74rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                      <span key={col} style={{ background: 'var(--bg-card)', color: 'var(--rose)', border: '1px solid var(--rose-border)', padding: '2px 8px', borderRadius: 'var(--radius-xs)', fontSize: '0.74rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                         ✕ Missing: {col}
                       </span>
                     ))}

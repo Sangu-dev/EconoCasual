@@ -21,27 +21,29 @@ export function usePlotlyTheme() {
 
   if (isDark) {
     return {
+      isDark: true,
       paper_bgcolor: 'rgba(0, 0, 0, 0)',
-      plot_bgcolor: 'rgba(15, 22, 38, 0.45)',
+      plot_bgcolor: 'rgba(21, 21, 21, 0.7)',
       font: {
         family: "'Plus Jakarta Sans', system-ui, sans-serif",
-        color: '#94a3b8',
+        color: '#b0b0b0',
         size: 11
       },
-      gridcolor: 'rgba(255, 255, 255, 0.05)',
-      zerolinecolor: 'rgba(255, 255, 255, 0.12)',
+      gridcolor: '#222222',
+      zerolinecolor: '#333333',
       hoverlabel: {
-        bgcolor: '#141e33',
-        bordercolor: '#6366f1',
-        font: { color: '#f8fafc', family: "'Plus Jakarta Sans', sans-serif" }
+        bgcolor: '#1b1b1b',
+        bordercolor: '#383838',
+        font: { color: '#f5f5f5', family: "'Plus Jakarta Sans', sans-serif" }
       },
-      legend_bg: 'rgba(15, 22, 38, 0.65)',
-      legend_font: '#e2e8f0'
+      legend_bg: 'rgba(21, 21, 21, 0.85)',
+      legend_font: '#f5f5f5'
     };
   }
 
   // Light theme colors (Default)
   return {
+    isDark: false,
     paper_bgcolor: 'rgba(0, 0, 0, 0)',
     plot_bgcolor: '#ffffff',
     font: {

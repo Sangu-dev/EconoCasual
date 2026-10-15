@@ -53,6 +53,8 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
     if (!iteScores || iteScores.length === 0) return [];
 
     const values = iteScores.map((d) => Number(d.ite)).filter((v) => !isNaN(v));
+    const barColor = theme.isDark ? '#e5e5e5' : '#6366f1';
+    const borderColor = theme.isDark ? '#ffffff' : '#4f46e5';
 
     return [
       {
@@ -60,14 +62,14 @@ export default function IteHistogram({ iteScores = [], isLoading = false }) {
         type: 'histogram',
         nbinsx: 30,
         marker: {
-          color: '#6366f1',
+          color: barColor,
           opacity: 0.85,
-          line: { color: '#4f46e5', width: 1 }
+          line: { color: borderColor, width: 1 }
         },
         hovertemplate: '<b>Effect Range:</b> $%{x:.2f}<br><b>Customers:</b> %{y:,}<extra></extra>'
       }
     ];
-  }, [iteScores]);
+  }, [iteScores, theme.isDark]);
 
   const layout = {
     autosize: true,

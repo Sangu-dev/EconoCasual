@@ -55,6 +55,10 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
     if (!upliftData || upliftData.length === 0) return [];
 
     const xValues = upliftData.map((d) => d.fraction_targeted * 100);
+    const modelLineColor = theme.isDark ? '#ffffff' : '#4f46e5';
+    const upliftFill = theme.isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(79, 70, 229, 0.08)';
+    const qiniFill = theme.isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(79, 70, 229, 0.12)';
+    const randomLineColor = theme.isDark ? '#666666' : '#94a3b8';
 
     if (viewMode === 'uplift') {
       return [
@@ -64,9 +68,9 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
           y: upliftData.map((d) => d.model_gain),
           type: 'scatter',
           mode: 'lines',
-          line: { color: '#4f46e5', width: 3 },
+          line: { color: modelLineColor, width: 3 },
           fill: 'tonexty',
-          fillcolor: 'rgba(79, 70, 229, 0.08)',
+          fillcolor: upliftFill,
           hovertemplate: '<b>DML Model</b><br>Targeted: %{x:.1f}%<br>Gain: $%{y:,.0f}<extra></extra>'
         },
         {
@@ -84,7 +88,7 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
           y: upliftData.map((d) => d.random_gain),
           type: 'scatter',
           mode: 'lines',
-          line: { color: '#94a3b8', width: 1.8, dash: 'dot' },
+          line: { color: randomLineColor, width: 1.8, dash: 'dot' },
           hovertemplate: '<b>Random Baseline</b><br>Targeted: %{x:.1f}%<br>Gain: $%{y:,.0f}<extra></extra>'
         }
       ];
@@ -97,9 +101,9 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
           y: upliftData.map((d) => Math.max(0, d.model_gain - d.random_gain)),
           type: 'scatter',
           mode: 'lines',
-          line: { color: '#4f46e5', width: 3 },
+          line: { color: modelLineColor, width: 3 },
           fill: 'tozeroy',
-          fillcolor: 'rgba(79, 70, 229, 0.12)',
+          fillcolor: qiniFill,
           hovertemplate: '<b>Qini Net Lift</b><br>Targeted: %{x:.1f}%<br>Net Gain: +$%{y:,.0f}<extra></extra>'
         },
         {
@@ -113,7 +117,7 @@ export default function UpliftChart({ upliftData = [], isLoading = false }) {
         }
       ];
     }
-  }, [upliftData, viewMode]);
+  }, [upliftData, viewMode, theme.isDark]);
 
   const layout = {
     autosize: true,

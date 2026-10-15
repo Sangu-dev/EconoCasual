@@ -42,13 +42,17 @@ export default function AllocationCharts({
     const spendValues = strategyData.map((d) => Number(d.total_spend) || 0);
     const gainValues = strategyData.map((d) => Number(d.total_gain) || 0);
 
+    const spendBarColor = theme.isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(148, 163, 184, 0.45)';
+    const spendLineColor = theme.isDark ? '#525252' : '#94a3b8';
+    const nonOptimizedColor = theme.isDark ? '#525252' : '#6366f1';
+
     return [
       {
         name: 'Marketing Budget Spend',
         x: strategies,
         y: spendValues,
         type: 'bar',
-        marker: { color: 'rgba(148, 163, 184, 0.45)', line: { color: '#94a3b8', width: 1.2 } },
+        marker: { color: spendBarColor, line: { color: spendLineColor, width: 1.2 } },
         hovertemplate: '<b>%{x}</b><br>Spend: $%{y:,.0f}<extra></extra>'
       },
       {
@@ -57,13 +61,13 @@ export default function AllocationCharts({
         y: gainValues,
         type: 'bar',
         marker: { 
-          color: strategies.map((s) => s.includes('Optimized') ? '#10b981' : '#6366f1'),
+          color: strategies.map((s) => s.includes('Optimized') ? '#10b981' : nonOptimizedColor),
           line: { color: 'rgba(255, 255, 255, 0.2)', width: 1 }
         },
         hovertemplate: '<b>%{x}</b><br>Gain: $%{y:,.0f}<extra></extra>'
       }
     ];
-  }, [strategyData]);
+  }, [strategyData, theme.isDark]);
 
   // Segment distribution traces
   const segmentTraces = useMemo(() => {
@@ -75,6 +79,7 @@ export default function AllocationCharts({
       'Sure Things': '#94a3b8',
       'Sleeping Dogs': '#f43f5e'
     };
+    const defaultSegmentColor = theme.isDark ? '#737373' : '#6366f1';
 
     return [
       {
@@ -82,13 +87,13 @@ export default function AllocationCharts({
         y: segmentStats.map((s) => s.totalGain),
         type: 'bar',
         marker: {
-          color: segmentStats.map((s) => segmentColors[s.segment] || '#6366f1'),
+          color: segmentStats.map((s) => segmentColors[s.segment] || defaultSegmentColor),
           line: { color: 'rgba(255, 255, 255, 0.15)', width: 1 }
         },
         hovertemplate: '<b>%{x}</b><br>Expected Gain: $%{y:,.2f}<extra></extra>'
       }
     ];
-  }, [segmentStats]);
+  }, [segmentStats, theme.isDark]);
 
   // Common Plotly Layout
   const commonLayout = {
@@ -159,7 +164,7 @@ export default function AllocationCharts({
       <div className="card-panel">
         <div className="card-header-row">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34, borderRadius: 'var(--radius-md)', background: 'rgba(99, 102, 241, 0.15)', color: 'var(--primary-light)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34, borderRadius: 'var(--radius-md)', background: 'var(--primary-subtle)', color: 'var(--primary-light)' }}>
               <TrendingUp size={18} />
             </div>
             <div>

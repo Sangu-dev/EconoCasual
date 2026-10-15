@@ -82,6 +82,8 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
       }
     });
 
+    const regularColor = theme.isDark ? '#858585' : '#6366f1';
+
     return [
       {
         name: 'Persuadables (ITE > $10)',
@@ -106,7 +108,7 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
         type: 'scattergl', // WebGL GPU accelerated
         mode: 'markers',
         marker: {
-          color: '#6366f1',
+          color: regularColor,
           size: 5.5,
           opacity: 0.7,
           line: { color: 'rgba(255, 255, 255, 0.4)', width: 0.5 }
@@ -129,7 +131,7 @@ export default function IteScatterPlot({ iteScores = [], isLoading = false }) {
         hoverinfo: 'text'
       }
     ];
-  }, [iteScores, featureKey]);
+  }, [iteScores, featureKey, theme.isDark]);
 
   const activeOption = featureOptions.find((o) => o.key === featureKey);
 
