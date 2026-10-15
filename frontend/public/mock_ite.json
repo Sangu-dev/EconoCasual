@@ -1,0 +1,1052 @@
+[
+  {
+    "customer_id": "CUST_0001",
+    "ite": 6.7,
+    "age": 59,
+    "loyalty_score": 1.54,
+    "avg_order_value": 97.24
+  },
+  {
+    "customer_id": "CUST_0002",
+    "ite": 4.62,
+    "age": 53,
+    "loyalty_score": 1.31,
+    "avg_order_value": 34.38
+  },
+  {
+    "customer_id": "CUST_0003",
+    "ite": 15.77,
+    "age": 33,
+    "loyalty_score": 5.2,
+    "avg_order_value": 190.57
+  },
+  {
+    "customer_id": "CUST_0004",
+    "ite": 24.77,
+    "age": 47,
+    "loyalty_score": 5.98,
+    "avg_order_value": 248.85
+  },
+  {
+    "customer_id": "CUST_0005",
+    "ite": 17.18,
+    "age": 46,
+    "loyalty_score": 3.66,
+    "avg_order_value": 88.52
+  },
+  {
+    "customer_id": "CUST_0006",
+    "ite": 30.16,
+    "age": 41,
+    "loyalty_score": 8.38,
+    "avg_order_value": 263.1
+  },
+  {
+    "customer_id": "CUST_0007",
+    "ite": 11.57,
+    "age": 53,
+    "loyalty_score": 1.66,
+    "avg_order_value": 48.25
+  },
+  {
+    "customer_id": "CUST_0008",
+    "ite": 19.25,
+    "age": 42,
+    "loyalty_score": 5.87,
+    "avg_order_value": 38.52
+  },
+  {
+    "customer_id": "CUST_0009",
+    "ite": 34.09,
+    "age": 37,
+    "loyalty_score": 9.66,
+    "avg_order_value": 280.61
+  },
+  {
+    "customer_id": "CUST_0010",
+    "ite": 18.66,
+    "age": 29,
+    "loyalty_score": 3.94,
+    "avg_order_value": 222.7
+  },
+  {
+    "customer_id": "CUST_0011",
+    "ite": 21.15,
+    "age": 62,
+    "loyalty_score": 6.53,
+    "avg_order_value": 182.57
+  },
+  {
+    "customer_id": "CUST_0012",
+    "ite": 23.0,
+    "age": 59,
+    "loyalty_score": 6.9,
+    "avg_order_value": 226.96
+  },
+  {
+    "customer_id": "CUST_0013",
+    "ite": 5.71,
+    "age": 68,
+    "loyalty_score": 1.02,
+    "avg_order_value": 262.49
+  },
+  {
+    "customer_id": "CUST_0014",
+    "ite": 29.64,
+    "age": 55,
+    "loyalty_score": 8.65,
+    "avg_order_value": 87.72
+  },
+  {
+    "customer_id": "CUST_0015",
+    "ite": 13.23,
+    "age": 60,
+    "loyalty_score": 4.77,
+    "avg_order_value": 66.19
+  },
+  {
+    "customer_id": "CUST_0016",
+    "ite": 25.27,
+    "age": 46,
+    "loyalty_score": 8.85,
+    "avg_order_value": 131.79
+  },
+  {
+    "customer_id": "CUST_0017",
+    "ite": 18.41,
+    "age": 27,
+    "loyalty_score": 5.24,
+    "avg_order_value": 247.96
+  },
+  {
+    "customer_id": "CUST_0018",
+    "ite": 18.34,
+    "age": 62,
+    "loyalty_score": 4.43,
+    "avg_order_value": 138.51
+  },
+  {
+    "customer_id": "CUST_0019",
+    "ite": 21.13,
+    "age": 48,
+    "loyalty_score": 5.42,
+    "avg_order_value": 225.68
+  },
+  {
+    "customer_id": "CUST_0020",
+    "ite": 15.83,
+    "age": 68,
+    "loyalty_score": 6.46,
+    "avg_order_value": 111.58
+  },
+  {
+    "customer_id": "CUST_0021",
+    "ite": 37.05,
+    "age": 19,
+    "loyalty_score": 9.37,
+    "avg_order_value": 311.71
+  },
+  {
+    "customer_id": "CUST_0022",
+    "ite": 16.96,
+    "age": 59,
+    "loyalty_score": 3.28,
+    "avg_order_value": 204.65
+  },
+  {
+    "customer_id": "CUST_0023",
+    "ite": 4.99,
+    "age": 67,
+    "loyalty_score": 2.0,
+    "avg_order_value": 295.96
+  },
+  {
+    "customer_id": "CUST_0024",
+    "ite": 30.03,
+    "age": 42,
+    "loyalty_score": 8.67,
+    "avg_order_value": 95.64
+  },
+  {
+    "customer_id": "CUST_0025",
+    "ite": 34.13,
+    "age": 55,
+    "loyalty_score": 9.31,
+    "avg_order_value": 240.91
+  },
+  {
+    "customer_id": "CUST_0026",
+    "ite": 11.62,
+    "age": 27,
+    "loyalty_score": 1.69,
+    "avg_order_value": 304.32
+  },
+  {
+    "customer_id": "CUST_0027",
+    "ite": 30.65,
+    "age": 52,
+    "loyalty_score": 8.61,
+    "avg_order_value": 309.49
+  },
+  {
+    "customer_id": "CUST_0028",
+    "ite": 12.86,
+    "age": 64,
+    "loyalty_score": 3.4,
+    "avg_order_value": 154.24
+  },
+  {
+    "customer_id": "CUST_0029",
+    "ite": 9.12,
+    "age": 26,
+    "loyalty_score": 2.81,
+    "avg_order_value": 124.74
+  },
+  {
+    "customer_id": "CUST_0030",
+    "ite": 28.88,
+    "age": 23,
+    "loyalty_score": 7.08,
+    "avg_order_value": 92.54
+  },
+  {
+    "customer_id": "CUST_0031",
+    "ite": 6.09,
+    "age": 40,
+    "loyalty_score": 1.16,
+    "avg_order_value": 107.15
+  },
+  {
+    "customer_id": "CUST_0032",
+    "ite": 16.9,
+    "age": 55,
+    "loyalty_score": 5.86,
+    "avg_order_value": 256.46
+  },
+  {
+    "customer_id": "CUST_0033",
+    "ite": 11.55,
+    "age": 31,
+    "loyalty_score": 1.38,
+    "avg_order_value": 129.52
+  },
+  {
+    "customer_id": "CUST_0034",
+    "ite": 30.75,
+    "age": 60,
+    "loyalty_score": 9.65,
+    "avg_order_value": 42.88
+  },
+  {
+    "customer_id": "CUST_0035",
+    "ite": 16.75,
+    "age": 25,
+    "loyalty_score": 2.81,
+    "avg_order_value": 183.2
+  },
+  {
+    "customer_id": "CUST_0036",
+    "ite": 23.48,
+    "age": 23,
+    "loyalty_score": 4.62,
+    "avg_order_value": 39.92
+  },
+  {
+    "customer_id": "CUST_0037",
+    "ite": 34.96,
+    "age": 19,
+    "loyalty_score": 9.51,
+    "avg_order_value": 74.06
+  },
+  {
+    "customer_id": "CUST_0038",
+    "ite": 14.63,
+    "age": 22,
+    "loyalty_score": 2.03,
+    "avg_order_value": 315.67
+  },
+  {
+    "customer_id": "CUST_0039",
+    "ite": 10.84,
+    "age": 48,
+    "loyalty_score": 3.15,
+    "avg_order_value": 70.67
+  },
+  {
+    "customer_id": "CUST_0040",
+    "ite": 11.42,
+    "age": 53,
+    "loyalty_score": 1.07,
+    "avg_order_value": 41.86
+  },
+  {
+    "customer_id": "CUST_0041",
+    "ite": 28.14,
+    "age": 51,
+    "loyalty_score": 9.05,
+    "avg_order_value": 71.44
+  },
+  {
+    "customer_id": "CUST_0042",
+    "ite": 6.59,
+    "age": 57,
+    "loyalty_score": 1.13,
+    "avg_order_value": 144.11
+  },
+  {
+    "customer_id": "CUST_0043",
+    "ite": 12.62,
+    "age": 55,
+    "loyalty_score": 2.79,
+    "avg_order_value": 207.72
+  },
+  {
+    "customer_id": "CUST_0044",
+    "ite": 9.6,
+    "age": 35,
+    "loyalty_score": 2.4,
+    "avg_order_value": 95.41
+  },
+  {
+    "customer_id": "CUST_0045",
+    "ite": 21.22,
+    "age": 61,
+    "loyalty_score": 6.5,
+    "avg_order_value": 118.27
+  },
+  {
+    "customer_id": "CUST_0046",
+    "ite": 33.52,
+    "age": 55,
+    "loyalty_score": 9.76,
+    "avg_order_value": 183.6
+  },
+  {
+    "customer_id": "CUST_0047",
+    "ite": 35.47,
+    "age": 27,
+    "loyalty_score": 9.18,
+    "avg_order_value": 284.38
+  },
+  {
+    "customer_id": "CUST_0048",
+    "ite": 7.8,
+    "age": 64,
+    "loyalty_score": 3.31,
+    "avg_order_value": 27.31
+  },
+  {
+    "customer_id": "CUST_0049",
+    "ite": 35.81,
+    "age": 38,
+    "loyalty_score": 9.17,
+    "avg_order_value": 301.98
+  },
+  {
+    "customer_id": "CUST_0050",
+    "ite": 9.19,
+    "age": 54,
+    "loyalty_score": 1.95,
+    "avg_order_value": 203.42
+  },
+  {
+    "customer_id": "CUST_0051",
+    "ite": 28.99,
+    "age": 32,
+    "loyalty_score": 6.89,
+    "avg_order_value": 174.1
+  },
+  {
+    "customer_id": "CUST_0052",
+    "ite": 20.08,
+    "age": 59,
+    "loyalty_score": 4.44,
+    "avg_order_value": 38.01
+  },
+  {
+    "customer_id": "CUST_0053",
+    "ite": 30.61,
+    "age": 27,
+    "loyalty_score": 6.43,
+    "avg_order_value": 72.67
+  },
+  {
+    "customer_id": "CUST_0054",
+    "ite": 13.12,
+    "age": 26,
+    "loyalty_score": 1.2,
+    "avg_order_value": 185.95
+  },
+  {
+    "customer_id": "CUST_0055",
+    "ite": 19.19,
+    "age": 56,
+    "loyalty_score": 5.64,
+    "avg_order_value": 62.6
+  },
+  {
+    "customer_id": "CUST_0056",
+    "ite": 37.28,
+    "age": 21,
+    "loyalty_score": 8.86,
+    "avg_order_value": 226.21
+  },
+  {
+    "customer_id": "CUST_0057",
+    "ite": 25.34,
+    "age": 41,
+    "loyalty_score": 7.76,
+    "avg_order_value": 312.28
+  },
+  {
+    "customer_id": "CUST_0058",
+    "ite": 39.66,
+    "age": 29,
+    "loyalty_score": 9.58,
+    "avg_order_value": 285.02
+  },
+  {
+    "customer_id": "CUST_0059",
+    "ite": 28.13,
+    "age": 66,
+    "loyalty_score": 9.1,
+    "avg_order_value": 261.66
+  },
+  {
+    "customer_id": "CUST_0060",
+    "ite": 6.39,
+    "age": 63,
+    "loyalty_score": 1.51,
+    "avg_order_value": 278.29
+  },
+  {
+    "customer_id": "CUST_0061",
+    "ite": 15.39,
+    "age": 48,
+    "loyalty_score": 3.75,
+    "avg_order_value": 90.76
+  },
+  {
+    "customer_id": "CUST_0062",
+    "ite": 28.81,
+    "age": 23,
+    "loyalty_score": 9.49,
+    "avg_order_value": 128.59
+  },
+  {
+    "customer_id": "CUST_0063",
+    "ite": 32.5,
+    "age": 62,
+    "loyalty_score": 9.62,
+    "avg_order_value": 122.69
+  },
+  {
+    "customer_id": "CUST_0064",
+    "ite": 35.26,
+    "age": 56,
+    "loyalty_score": 9.45,
+    "avg_order_value": 36.29
+  },
+  {
+    "customer_id": "CUST_0065",
+    "ite": 25.25,
+    "age": 41,
+    "loyalty_score": 7.28,
+    "avg_order_value": 153.74
+  },
+  {
+    "customer_id": "CUST_0066",
+    "ite": 16.03,
+    "age": 31,
+    "loyalty_score": 2.87,
+    "avg_order_value": 25.5
+  },
+  {
+    "customer_id": "CUST_0067",
+    "ite": 27.63,
+    "age": 53,
+    "loyalty_score": 6.89,
+    "avg_order_value": 132.45
+  },
+  {
+    "customer_id": "CUST_0068",
+    "ite": 22.39,
+    "age": 39,
+    "loyalty_score": 6.67,
+    "avg_order_value": 237.33
+  },
+  {
+    "customer_id": "CUST_0069",
+    "ite": 23.33,
+    "age": 38,
+    "loyalty_score": 6.7,
+    "avg_order_value": 143.71
+  },
+  {
+    "customer_id": "CUST_0070",
+    "ite": 23.62,
+    "age": 43,
+    "loyalty_score": 6.8,
+    "avg_order_value": 206.58
+  },
+  {
+    "customer_id": "CUST_0071",
+    "ite": 28.93,
+    "age": 54,
+    "loyalty_score": 8.25,
+    "avg_order_value": 109.64
+  },
+  {
+    "customer_id": "CUST_0072",
+    "ite": 22.49,
+    "age": 48,
+    "loyalty_score": 4.61,
+    "avg_order_value": 175.8
+  },
+  {
+    "customer_id": "CUST_0073",
+    "ite": 6.04,
+    "age": 66,
+    "loyalty_score": 2.08,
+    "avg_order_value": 108.72
+  },
+  {
+    "customer_id": "CUST_0074",
+    "ite": 14.59,
+    "age": 67,
+    "loyalty_score": 2.68,
+    "avg_order_value": 91.27
+  },
+  {
+    "customer_id": "CUST_0075",
+    "ite": 11.48,
+    "age": 20,
+    "loyalty_score": 0.93,
+    "avg_order_value": 205.33
+  },
+  {
+    "customer_id": "CUST_0076",
+    "ite": 11.93,
+    "age": 55,
+    "loyalty_score": 2.31,
+    "avg_order_value": 170.84
+  },
+  {
+    "customer_id": "CUST_0077",
+    "ite": 22.33,
+    "age": 60,
+    "loyalty_score": 6.89,
+    "avg_order_value": 254.63
+  },
+  {
+    "customer_id": "CUST_0078",
+    "ite": 1.98,
+    "age": 48,
+    "loyalty_score": 0.97,
+    "avg_order_value": 295.65
+  },
+  {
+    "customer_id": "CUST_0079",
+    "ite": 29.21,
+    "age": 27,
+    "loyalty_score": 7.95,
+    "avg_order_value": 316.43
+  },
+  {
+    "customer_id": "CUST_0080",
+    "ite": 27.92,
+    "age": 58,
+    "loyalty_score": 8.08,
+    "avg_order_value": 150.89
+  },
+  {
+    "customer_id": "CUST_0081",
+    "ite": 26.81,
+    "age": 47,
+    "loyalty_score": 8.84,
+    "avg_order_value": 157.77
+  },
+  {
+    "customer_id": "CUST_0082",
+    "ite": 17.91,
+    "age": 68,
+    "loyalty_score": 5.35,
+    "avg_order_value": 106.01
+  },
+  {
+    "customer_id": "CUST_0083",
+    "ite": 15.75,
+    "age": 37,
+    "loyalty_score": 2.68,
+    "avg_order_value": 119.31
+  },
+  {
+    "customer_id": "CUST_0084",
+    "ite": 7.36,
+    "age": 63,
+    "loyalty_score": 1.92,
+    "avg_order_value": 43.95
+  },
+  {
+    "customer_id": "CUST_0085",
+    "ite": 21.05,
+    "age": 53,
+    "loyalty_score": 4.83,
+    "avg_order_value": 86.02
+  },
+  {
+    "customer_id": "CUST_0086",
+    "ite": 3.51,
+    "age": 63,
+    "loyalty_score": 0.68,
+    "avg_order_value": 165.71
+  },
+  {
+    "customer_id": "CUST_0087",
+    "ite": 26.59,
+    "age": 38,
+    "loyalty_score": 7.51,
+    "avg_order_value": 183.78
+  },
+  {
+    "customer_id": "CUST_0088",
+    "ite": 13.17,
+    "age": 50,
+    "loyalty_score": 2.54,
+    "avg_order_value": 168.26
+  },
+  {
+    "customer_id": "CUST_0089",
+    "ite": 21.65,
+    "age": 61,
+    "loyalty_score": 6.82,
+    "avg_order_value": 238.63
+  },
+  {
+    "customer_id": "CUST_0090",
+    "ite": 2.48,
+    "age": 53,
+    "loyalty_score": 0.75,
+    "avg_order_value": 199.61
+  },
+  {
+    "customer_id": "CUST_0091",
+    "ite": 29.04,
+    "age": 24,
+    "loyalty_score": 6.48,
+    "avg_order_value": 280.72
+  },
+  {
+    "customer_id": "CUST_0092",
+    "ite": 14.9,
+    "age": 48,
+    "loyalty_score": 3.54,
+    "avg_order_value": 107.09
+  },
+  {
+    "customer_id": "CUST_0093",
+    "ite": 16.94,
+    "age": 45,
+    "loyalty_score": 2.85,
+    "avg_order_value": 163.74
+  },
+  {
+    "customer_id": "CUST_0094",
+    "ite": 29.19,
+    "age": 33,
+    "loyalty_score": 6.55,
+    "avg_order_value": 247.5
+  },
+  {
+    "customer_id": "CUST_0095",
+    "ite": 32.6,
+    "age": 31,
+    "loyalty_score": 8.3,
+    "avg_order_value": 95.37
+  },
+  {
+    "customer_id": "CUST_0096",
+    "ite": 25.52,
+    "age": 48,
+    "loyalty_score": 7.01,
+    "avg_order_value": 74.5
+  },
+  {
+    "customer_id": "CUST_0097",
+    "ite": 24.69,
+    "age": 66,
+    "loyalty_score": 7.18,
+    "avg_order_value": 309.59
+  },
+  {
+    "customer_id": "CUST_0098",
+    "ite": 25.56,
+    "age": 62,
+    "loyalty_score": 8.94,
+    "avg_order_value": 142.01
+  },
+  {
+    "customer_id": "CUST_0099",
+    "ite": 27.19,
+    "age": 23,
+    "loyalty_score": 6.01,
+    "avg_order_value": 55.06
+  },
+  {
+    "customer_id": "CUST_0100",
+    "ite": 33.14,
+    "age": 26,
+    "loyalty_score": 7.9,
+    "avg_order_value": 127.43
+  },
+  {
+    "customer_id": "CUST_0101",
+    "ite": 12.48,
+    "age": 42,
+    "loyalty_score": 1.14,
+    "avg_order_value": 28.73
+  },
+  {
+    "customer_id": "CUST_0102",
+    "ite": 21.48,
+    "age": 42,
+    "loyalty_score": 6.41,
+    "avg_order_value": 233.66
+  },
+  {
+    "customer_id": "CUST_0103",
+    "ite": 18.78,
+    "age": 65,
+    "loyalty_score": 5.35,
+    "avg_order_value": 206.69
+  },
+  {
+    "customer_id": "CUST_0104",
+    "ite": 15.43,
+    "age": 65,
+    "loyalty_score": 6.01,
+    "avg_order_value": 276.26
+  },
+  {
+    "customer_id": "CUST_0105",
+    "ite": 16.15,
+    "age": 24,
+    "loyalty_score": 3.09,
+    "avg_order_value": 96.94
+  },
+  {
+    "customer_id": "CUST_0106",
+    "ite": 22.6,
+    "age": 20,
+    "loyalty_score": 5.1,
+    "avg_order_value": 78.64
+  },
+  {
+    "customer_id": "CUST_0107",
+    "ite": 23.32,
+    "age": 35,
+    "loyalty_score": 3.67,
+    "avg_order_value": 188.96
+  },
+  {
+    "customer_id": "CUST_0108",
+    "ite": 18.76,
+    "age": 45,
+    "loyalty_score": 5.04,
+    "avg_order_value": 228.73
+  },
+  {
+    "customer_id": "CUST_0109",
+    "ite": 23.14,
+    "age": 50,
+    "loyalty_score": 4.67,
+    "avg_order_value": 52.45
+  },
+  {
+    "customer_id": "CUST_0110",
+    "ite": 18.16,
+    "age": 56,
+    "loyalty_score": 3.93,
+    "avg_order_value": 126.41
+  },
+  {
+    "customer_id": "CUST_0111",
+    "ite": 4.55,
+    "age": 54,
+    "loyalty_score": 3.58,
+    "avg_order_value": 104.92
+  },
+  {
+    "customer_id": "CUST_0112",
+    "ite": 30.02,
+    "age": 26,
+    "loyalty_score": 7.41,
+    "avg_order_value": 81.5
+  },
+  {
+    "customer_id": "CUST_0113",
+    "ite": 22.58,
+    "age": 36,
+    "loyalty_score": 7.24,
+    "avg_order_value": 201.05
+  },
+  {
+    "customer_id": "CUST_0114",
+    "ite": 9.17,
+    "age": 42,
+    "loyalty_score": 2.17,
+    "avg_order_value": 233.87
+  },
+  {
+    "customer_id": "CUST_0115",
+    "ite": 35.23,
+    "age": 21,
+    "loyalty_score": 9.56,
+    "avg_order_value": 230.74
+  },
+  {
+    "customer_id": "CUST_0116",
+    "ite": 30.78,
+    "age": 19,
+    "loyalty_score": 5.84,
+    "avg_order_value": 166.22
+  },
+  {
+    "customer_id": "CUST_0117",
+    "ite": 16.98,
+    "age": 22,
+    "loyalty_score": 2.85,
+    "avg_order_value": 58.66
+  },
+  {
+    "customer_id": "CUST_0118",
+    "ite": 3.75,
+    "age": 62,
+    "loyalty_score": 1.0,
+    "avg_order_value": 264.29
+  },
+  {
+    "customer_id": "CUST_0119",
+    "ite": 34.33,
+    "age": 24,
+    "loyalty_score": 9.74,
+    "avg_order_value": 189.63
+  },
+  {
+    "customer_id": "CUST_0120",
+    "ite": 20.8,
+    "age": 68,
+    "loyalty_score": 5.36,
+    "avg_order_value": 293.01
+  },
+  {
+    "customer_id": "CUST_0121",
+    "ite": 34.41,
+    "age": 56,
+    "loyalty_score": 9.71,
+    "avg_order_value": 192.75
+  },
+  {
+    "customer_id": "CUST_0122",
+    "ite": 6.73,
+    "age": 67,
+    "loyalty_score": 2.43,
+    "avg_order_value": 103.07
+  },
+  {
+    "customer_id": "CUST_0123",
+    "ite": 15.66,
+    "age": 34,
+    "loyalty_score": 2.12,
+    "avg_order_value": 71.18
+  },
+  {
+    "customer_id": "CUST_0124",
+    "ite": 19.92,
+    "age": 21,
+    "loyalty_score": 2.65,
+    "avg_order_value": 232.38
+  },
+  {
+    "customer_id": "CUST_0125",
+    "ite": 19.07,
+    "age": 62,
+    "loyalty_score": 2.67,
+    "avg_order_value": 257.41
+  },
+  {
+    "customer_id": "CUST_0126",
+    "ite": 10.26,
+    "age": 46,
+    "loyalty_score": 1.57,
+    "avg_order_value": 216.05
+  },
+  {
+    "customer_id": "CUST_0127",
+    "ite": 14.83,
+    "age": 28,
+    "loyalty_score": 1.16,
+    "avg_order_value": 258.83
+  },
+  {
+    "customer_id": "CUST_0128",
+    "ite": 10.94,
+    "age": 47,
+    "loyalty_score": 1.66,
+    "avg_order_value": 231.42
+  },
+  {
+    "customer_id": "CUST_0129",
+    "ite": 20.4,
+    "age": 51,
+    "loyalty_score": 5.52,
+    "avg_order_value": 48.73
+  },
+  {
+    "customer_id": "CUST_0130",
+    "ite": 8.54,
+    "age": 35,
+    "loyalty_score": 0.74,
+    "avg_order_value": 308.76
+  },
+  {
+    "customer_id": "CUST_0131",
+    "ite": 17.58,
+    "age": 55,
+    "loyalty_score": 5.96,
+    "avg_order_value": 319.87
+  },
+  {
+    "customer_id": "CUST_0132",
+    "ite": 7.75,
+    "age": 67,
+    "loyalty_score": 2.13,
+    "avg_order_value": 217.2
+  },
+  {
+    "customer_id": "CUST_0133",
+    "ite": 37.01,
+    "age": 30,
+    "loyalty_score": 9.77,
+    "avg_order_value": 212.26
+  },
+  {
+    "customer_id": "CUST_0134",
+    "ite": 10.96,
+    "age": 40,
+    "loyalty_score": 3.49,
+    "avg_order_value": 278.03
+  },
+  {
+    "customer_id": "CUST_0135",
+    "ite": 15.23,
+    "age": 63,
+    "loyalty_score": 5.11,
+    "avg_order_value": 265.0
+  },
+  {
+    "customer_id": "CUST_0136",
+    "ite": 11.73,
+    "age": 39,
+    "loyalty_score": 1.58,
+    "avg_order_value": 280.15
+  },
+  {
+    "customer_id": "CUST_0137",
+    "ite": 27.74,
+    "age": 19,
+    "loyalty_score": 6.62,
+    "avg_order_value": 161.28
+  },
+  {
+    "customer_id": "CUST_0138",
+    "ite": 22.53,
+    "age": 50,
+    "loyalty_score": 6.32,
+    "avg_order_value": 85.05
+  },
+  {
+    "customer_id": "CUST_0139",
+    "ite": 18.91,
+    "age": 37,
+    "loyalty_score": 4.57,
+    "avg_order_value": 60.82
+  },
+  {
+    "customer_id": "CUST_0140",
+    "ite": 10.35,
+    "age": 29,
+    "loyalty_score": 3.39,
+    "avg_order_value": 187.91
+  },
+  {
+    "customer_id": "CUST_0141",
+    "ite": 23.7,
+    "age": 26,
+    "loyalty_score": 4.79,
+    "avg_order_value": 216.07
+  },
+  {
+    "customer_id": "CUST_0142",
+    "ite": 13.27,
+    "age": 64,
+    "loyalty_score": 3.04,
+    "avg_order_value": 314.17
+  },
+  {
+    "customer_id": "CUST_0143",
+    "ite": 8.8,
+    "age": 54,
+    "loyalty_score": 1.85,
+    "avg_order_value": 296.95
+  },
+  {
+    "customer_id": "CUST_0144",
+    "ite": 27.58,
+    "age": 36,
+    "loyalty_score": 7.69,
+    "avg_order_value": 125.26
+  },
+  {
+    "customer_id": "CUST_0145",
+    "ite": 27.33,
+    "age": 36,
+    "loyalty_score": 8.13,
+    "avg_order_value": 239.19
+  },
+  {
+    "customer_id": "CUST_0146",
+    "ite": 21.64,
+    "age": 28,
+    "loyalty_score": 4.65,
+    "avg_order_value": 126.81
+  },
+  {
+    "customer_id": "CUST_0147",
+    "ite": 14.06,
+    "age": 53,
+    "loyalty_score": 4.01,
+    "avg_order_value": 281.53
+  },
+  {
+    "customer_id": "CUST_0148",
+    "ite": 8.72,
+    "age": 68,
+    "loyalty_score": 4.32,
+    "avg_order_value": 244.69
+  },
+  {
+    "customer_id": "CUST_0149",
+    "ite": 17.49,
+    "age": 43,
+    "loyalty_score": 4.09,
+    "avg_order_value": 171.12
+  },
+  {
+    "customer_id": "CUST_0150",
+    "ite": 32.25,
+    "age": 25,
+    "loyalty_score": 8.63,
+    "avg_order_value": 54.41
+  }
+]
