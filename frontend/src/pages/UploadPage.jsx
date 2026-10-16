@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Table as TableIcon
 } from 'lucide-react';
+import brandCrest from '../assets/logo-crest.png';
 
 export default function UploadPage() {
   const { 
@@ -64,11 +65,16 @@ export default function UploadPage() {
       {/* Import Modal / Card (Reference 2 style) */}
       <div className="import-modal-card">
         <div className="import-header">
-          <div>
-            <h2 className="import-title">Import Observational Customer Data</h2>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-              Upload your customer retail CSV to validate features against Double Machine Learning (DML) requirements.
-            </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div className="brand-crest-wrapper" style={{ width: 36, height: 36 }}>
+              <img src={brandCrest} alt="EconoCausal" className="brand-logo-crest" style={{ width: 24, height: 24 }} />
+            </div>
+            <div>
+              <h2 className="import-title">Import Observational Customer Data</h2>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
+                Upload your customer retail CSV to validate features against Double Machine Learning (DML) requirements.
+              </p>
+            </div>
           </div>
 
           <div style={{ display: 'flex', gap: '0.5rem' }}>

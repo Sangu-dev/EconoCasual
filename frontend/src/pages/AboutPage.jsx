@@ -1,5 +1,7 @@
 import React from 'react';
 import { HelpCircle, Layers, Cpu, Brain, Database, LineChart, PieChart, ShieldCheck } from 'lucide-react';
+import brandCrest from '../assets/logo-crest.png';
+import logoGradient from '../assets/logo-gradient.png';
 
 export default function AboutPage() {
   return (
@@ -8,18 +10,8 @@ export default function AboutPage() {
       <div className="page-header" style={{ marginBottom: '1.75rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <div style={{ 
-              width: 40, 
-              height: 40, 
-              borderRadius: 'var(--radius-sm)', 
-              backgroundColor: 'var(--primary-subtle)', 
-              color: 'var(--primary)', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              flexShrink: 0
-            }}>
-              <HelpCircle size={22} />
+            <div className="brand-crest-wrapper" style={{ width: 42, height: 42 }}>
+              <img src={brandCrest} alt="EconoCausal Crest" className="brand-logo-crest" style={{ width: 30, height: 30 }} />
             </div>
             <div>
               <h1 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.4px', margin: 0 }}>
@@ -240,6 +232,51 @@ export default function AboutPage() {
             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
               Solves bounded linear optimization allocating finite promotional budget only to customers where expected incremental revenue exceeds discount cost.
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Brand Identity & Engine Architecture Footer */}
+      <div className="panel-card" style={{ marginTop: '1.5rem', background: 'linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-subtle) 100%)', border: '1px solid var(--border-card)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+            <div style={{ 
+              width: 58, 
+              height: 58, 
+              borderRadius: 'var(--radius-sm)', 
+              background: 'radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.2), rgba(14, 165, 233, 0.05))',
+              border: '1px solid rgba(14, 165, 233, 0.25)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 12px rgba(14, 165, 233, 0.2)',
+              flexShrink: 0
+            }}>
+              <img 
+                src={brandCrest} 
+                alt="EconoCausal Logo Crest" 
+                style={{ width: 44, height: 44, objectFit: 'contain', filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2))' }} 
+              />
+            </div>
+            <div>
+              <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
+                Econo<span style={{ color: 'var(--primary)' }}>Causal</span>™ Uplift & Budget Allocation Engine
+              </div>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
+                Double Machine Learning (DML) • Frisch-Waugh-Lovell Orthogonalization • Knapsack Optimization
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.74rem', padding: '0.25rem 0.65rem', borderRadius: 999, background: 'var(--primary-subtle)', color: 'var(--primary)', fontWeight: 600, border: '1px solid rgba(14, 165, 233, 0.2)' }}>
+              v2.4 Production
+            </span>
+            <span style={{ fontSize: '0.74rem', padding: '0.25rem 0.65rem', borderRadius: 999, background: 'var(--bg-app)', color: 'var(--text-muted)', fontWeight: 600, border: '1px solid var(--border-card)' }}>
+              EconML 0.15+
+            </span>
+            <span style={{ fontSize: '0.74rem', padding: '0.25rem 0.65rem', borderRadius: 999, background: 'var(--emerald-subtle)', color: 'var(--emerald)', fontWeight: 600, border: '1px solid var(--emerald-border)' }}>
+              ● Causal Pipeline Active
+            </span>
           </div>
         </div>
       </div>
