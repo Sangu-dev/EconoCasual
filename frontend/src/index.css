@@ -1244,7 +1244,261 @@ code, kbd, samp, pre {
   border-radius: 3px;
 }
 
-[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #383838;
+/* Dynamic Budget What-If Simulator Styles */
+.budget-sim-panel {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-subtle) 100%);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem 1.6rem;
+  margin-bottom: 1.35rem;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+.budget-sim-panel:hover {
+  border-color: var(--border-active);
+  box-shadow: var(--shadow-hover);
+}
+
+.budget-sim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.15rem;
+}
+
+.budget-sim-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.budget-sim-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-subtle);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--primary-border);
+}
+
+.budget-sim-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.budget-sim-sub {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+.budget-sim-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.budget-preset-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.32rem 0.75rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.budget-preset-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-active);
+  color: var(--text-primary);
+}
+
+.budget-preset-btn.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 6px -1px rgba(79, 70, 229, 0.4);
+}
+
+.budget-slider-container {
+  padding: 0.5rem 0.2rem 0.2rem;
+}
+
+.budget-slider-track {
+  width: 100%;
+  height: 8px;
+  border-radius: var(--radius-full);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border-card);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.budget-slider-track::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.budget-slider-track::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 6px var(--primary-subtle);
+}
+
+.budget-slider-track::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.budget-scale-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.45rem;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.budget-sim-metrics-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.budget-sim-metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.budget-sim-metric-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.budget-sim-metric-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.zone-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: fit-content;
+}
+
+.zone-optimal {
+  background: var(--emerald-subtle);
+  color: var(--emerald-text);
+  border: 1px solid var(--emerald-border);
+}
+
+.zone-growth {
+  background: var(--primary-subtle);
+  color: var(--primary-text);
+  border: 1px solid var(--primary-border);
+}
+
+.zone-diminishing {
+  background: var(--amber-subtle);
+  color: var(--amber-text);
+  border: 1px solid var(--amber-border);
+}
+
+.zone-saturation {
+  background: var(--rose-subtle);
+  color: var(--rose-text);
+  border: 1px solid var(--rose-border);
+}
+
+/* Dark mode adjustments for budget simulator */
+[data-theme="dark"] .budget-sim-panel {
+  background: linear-gradient(135deg, #151515 0%, #1a1a1a 100%);
+  border-color: #292929;
+}
+
+[data-theme="dark"] .budget-sim-icon-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #383838;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .budget-preset-btn {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+  color: #a3a3a3;
+}
+
+[data-theme="dark"] .budget-preset-btn:hover {
+  background: #282828;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .budget-preset-btn.active {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .budget-slider-track {
+  background: #292929;
+}
+
+[data-theme="dark"] .budget-slider-track::-webkit-slider-thumb {
+  background: #ffffff;
+  border: 3px solid #1a1a1a;
+}
+
 

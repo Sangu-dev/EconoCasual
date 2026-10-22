@@ -1,7 +1,6 @@
 import React from 'react';
-import { HelpCircle, Layers, Cpu, Brain, Database, LineChart, PieChart, ShieldCheck } from 'lucide-react';
+import { Layers, Cpu, Brain, Database, LineChart, PieChart, ShieldCheck } from 'lucide-react';
 import brandCrest from '../assets/logo-crest.png';
-import logoGradient from '../assets/logo-gradient.png';
 
 export default function AboutPage() {
   return (
