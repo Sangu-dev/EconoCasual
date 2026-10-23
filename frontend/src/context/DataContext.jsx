@@ -1,9 +1,8 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Papa from 'papaparse';
 import apiClient from '../api/client';
 import { REQUIRED_COLUMNS } from '../constants/schema';
-
-const DataContext = createContext(null);
+import { DataContext } from './context';
 
 export function DataProvider({ children }) {
   const [dataset, setDataset] = useState([]);
@@ -68,9 +67,18 @@ export function DataProvider({ children }) {
     }
   }, [budget]);
 
-  // Initial mount load
+  // Initial mount load (deferred to avoid synchronous cascading render in effect)
   useEffect(() => {
-    loadPipelineMetrics();
+    let ignore = false;
+    const timer = setTimeout(() => {
+      if (!ignore) {
+        loadPipelineMetrics();
+      }
+    }, 0);
+    return () => {
+      ignore = true;
+      clearTimeout(timer);
+    };
   }, [loadPipelineMetrics]);
 
   // Format file size utility
@@ -272,10 +280,4 @@ export function DataProvider({ children }) {
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
 
-export function useData() {
-  const context = useContext(DataContext);
-  if (!context) {
-    throw new Error('useData must be used within a DataProvider');
-  }
-  return context;
-}
+export default DataProvider;
