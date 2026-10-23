@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { DataProvider, useData } from './context/DataContext';
+import { DataProvider } from './context/DataContext';
+import { useData } from './context/useData';
 import UploadPage from './pages/UploadPage';
 import ChartsPage from './pages/ChartsPage';
 import AllocationPage from './pages/AllocationPage';
