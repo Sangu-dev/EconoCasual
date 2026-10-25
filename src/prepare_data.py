@@ -23,7 +23,6 @@ def _pick(labels, wanted, what, test):
                          f"Re-run with --{'treat' if what == 'discount' else 'control'} \"<label>\".")
     return found[0]
 
-
 def transform(raw: pd.DataFrame, treat: str = None, control: str = None,
               value_per_conversion: float = 25.0) -> pd.DataFrame:
     missing = [c for c in RAW_COLUMNS if c not in raw.columns]
