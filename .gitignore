@@ -7,3 +7,6 @@ node_modules/
 dist/
 .env
 frontend/public/mock_ite_big.json
+
+# Personal stage-wise documentation (ignored by git)
+STAGE_WISE_DOCUMENTATION.md
