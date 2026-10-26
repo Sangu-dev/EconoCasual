@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useData } from '../context/DataContext';
+import { useData } from '../context/useData';
 import UpliftChart from '../charts/UpliftChart';
 import IteHistogram from '../charts/IteHistogram';
 import IteScatterPlot from '../charts/IteScatterPlot';
