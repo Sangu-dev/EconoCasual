@@ -51,8 +51,13 @@ EconoCasual/
 │   ├── allocation.csv                     # Inbound contract from Role B
 │   └── strategy_comparison.csv            # Inbound contract from Role B
 ├── docs/
+│   ├── interface_showcase.md              # Visual showcase with primary panel screenshots
+│   ├── causal_methodology.md              # Causal inference foundations & Double ML math
+│   ├── data_contracts.md                  # Standardized data schemas & contract validation
+│   ├── api_architecture.md               # REST API endpoints & offline fallback
 │   ├── frontend_setup_sangamesh_ragam.md  # (This comprehensive guide)
 │   ├── performance_notes.md               # Empirical benchmark results (1k - 50k rows)
+│   ├── glossary.md                        # Causal terminology definitions
 │   └── screenshots/                       # UI documentation captures
 ├── frontend/
 │   ├── public/
