@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { DataProvider, useData } from './context/DataContext';
+import { DataProvider } from './context/DataContext';
+import { useData } from './context/useData';
 import UploadPage from './pages/UploadPage';
 import ChartsPage from './pages/ChartsPage';
 import AllocationPage from './pages/AllocationPage';
@@ -20,6 +21,7 @@ import {
   Layers,
   ArrowRight
 } from 'lucide-react';
+import brandCrest from './assets/logo-crest.png';
 
 const NAV_ITEMS = [
   { id: 'upload', label: 'CSV Ingestion', icon: FileSpreadsheet, pageTitle: 'Data Ingestion & Column Mapping' },
@@ -147,12 +149,20 @@ function DashboardContent() {
       <aside className="app-sidebar" aria-label="Sidebar Navigation">
         {/* Brand Header */}
         <div className="sidebar-header">
-          <div className="brand-badge">
-            <div className="brand-icon-box">E</div>
+          <button 
+            type="button"
+            className="brand-badge"
+            onClick={() => setActiveTab('upload')}
+            title="EconoCausal - Home"
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}
+          >
+            <div className="brand-crest-wrapper">
+              <img src={brandCrest} alt="EconoCausal Logo Icon" className="brand-logo-crest" />
+            </div>
             <div className="brand-title">
               Econo<span>Causal</span>.
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Navigation Sections */}

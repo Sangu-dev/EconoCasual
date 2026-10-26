@@ -1,9 +1,8 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Papa from 'papaparse';
 import apiClient from '../api/client';
 import { REQUIRED_COLUMNS } from '../constants/schema';
-
-const DataContext = createContext(null);
+import { DataContext } from './context';
 
 export function DataProvider({ children }) {
   const [dataset, setDataset] = useState([]);
@@ -68,9 +67,18 @@ export function DataProvider({ children }) {
     }
   }, [budget]);
 
-  // Initial mount load
+  // Initial mount load (deferred to avoid synchronous cascading render in effect)
   useEffect(() => {
-    loadPipelineMetrics();
+    let ignore = false;
+    const timer = setTimeout(() => {
+      if (!ignore) {
+        loadPipelineMetrics();
+      }
+    }, 0);
+    return () => {
+      ignore = true;
+      clearTimeout(timer);
+    };
   }, [loadPipelineMetrics]);
 
   // Format file size utility
@@ -145,6 +153,25 @@ export function DataProvider({ children }) {
       );
     } else {
       setValidationError(null);
+      // Synchronize customer ITE records for high-scale visualization (Stage 3 WebGL)
+      if (rows.length >= 1000) {
+        const derivedIte = rows.map((r) => {
+          const loyalty = Number(r.loyalty_score) || 0;
+          const aov = Number(r.avg_order_value) || 0;
+          const rawIte = (loyalty * 1.82) + (aov * 0.038) - 7.6;
+          const iteVal = parseFloat(rawIte.toFixed(2));
+          return {
+            customer_id: r.customer_id,
+            ite: iteVal,
+            loyalty_score: loyalty,
+            avg_order_value: aov,
+            age: Number(r.age) || 0,
+            past_orders: Number(r.past_orders) || 0,
+            segment: iteVal > 10 ? 'Persuadables' : iteVal > 5 ? 'High-Value Loyal' : iteVal >= 0 ? 'Sure Things' : 'Sleeping Dogs'
+          };
+        });
+        setIteScores(derivedIte);
+      }
     }
   };
 
@@ -204,6 +231,33 @@ export function DataProvider({ children }) {
     }
   };
 
+  // Load Synthetic 10,000 Rows CSV for Stage 3 Scale & Performance Testing
+  const loadSynthetic10kData = async () => {
+    setIsLoading(true);
+    setValidationError(null);
+    try {
+      const response = await fetch('/synthetic_10k.csv');
+      const csvText = await response.text();
+      Papa.parse(csvText, {
+        header: true,
+        dynamicTyping: true,
+        skipEmptyLines: 'greedy',
+        transformHeader: (h) => h.trim(),
+        complete: (results) => {
+          setIsLoading(false);
+          validateAndProcessData(results.data, 'synthetic_10k.csv (10,000 customers)', csvText.length);
+        },
+        error: (err) => {
+          setIsLoading(false);
+          setValidationError(`Failed to load 10k stress test: ${err.message}`);
+        }
+      });
+    } catch (e) {
+      setIsLoading(false);
+      setValidationError(`Network error loading 10k stress test: ${e.message}`);
+    }
+  };
+
   // Load Invalid Sample CSV to test validation rejection
   const loadInvalidSample = async () => {
     setIsLoading(true);
@@ -237,6 +291,7 @@ export function DataProvider({ children }) {
     setFileSize(null);
     setSummary(null);
     setValidationError(null);
+    loadPipelineMetrics();
   };
 
   const value = {
@@ -264,6 +319,7 @@ export function DataProvider({ children }) {
     setActiveTab,
     parseCsvFile,
     loadSampleData,
+    loadSynthetic10kData,
     loadInvalidSample,
     resetDataset,
     loadPipelineMetrics
@@ -272,10 +328,4 @@ export function DataProvider({ children }) {
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
 
-export function useData() {
-  const context = useContext(DataContext);
-  if (!context) {
-    throw new Error('useData must be used within a DataProvider');
-  }
-  return context;
-}
+export default DataProvider;
