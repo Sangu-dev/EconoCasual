@@ -48,6 +48,27 @@ function DashboardContent() {
   const [theme, setTheme] = useState(() => localStorage.getItem('econocausal_theme') || 'light');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchContainerRef = useRef(null);
+  const contentAreaRef = useRef(null);
+  const appMainRef = useRef(null);
+
+  // Scroll to the top on every panel change so each panel displays from the top
+  useEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      if (contentAreaRef.current) {
+        contentAreaRef.current.scrollTop = 0;
+      }
+      if (appMainRef.current) {
+        appMainRef.current.scrollTop = 0;
+      }
+    };
+
+    scrollToTop();
+    const frameId = requestAnimationFrame(scrollToTop);
+    return () => cancelAnimationFrame(frameId);
+  }, [activeTab]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -176,7 +197,14 @@ function DashboardContent() {
                 key={item.id}
                 type="button"
                 className={`sidebar-link ${isActive ? 'active' : ''}`}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                  document.documentElement.scrollTop = 0;
+                  document.body.scrollTop = 0;
+                  if (contentAreaRef.current) contentAreaRef.current.scrollTop = 0;
+                  if (appMainRef.current) appMainRef.current.scrollTop = 0;
+                }}
               >
                 <Icon size={17} style={{ flexShrink: 0 }} />
                 <span>{item.label}</span>
@@ -208,7 +236,7 @@ function DashboardContent() {
       </aside>
 
       {/* Main View Area */}
-      <div className="app-main">
+      <div ref={appMainRef} className="app-main">
         {/* Top Bar (Reference 1 & 3) */}
         <header className="app-topbar">
           <div className="topbar-left">
@@ -382,7 +410,7 @@ function DashboardContent() {
         </header>
 
         {/* Content Viewport */}
-        <main className="content-area">
+        <main ref={contentAreaRef} className="content-area">
           {activeTab === 'upload' && <UploadPage />}
           {activeTab === 'charts' && <ChartsPage />}
           {activeTab === 'allocation' && <AllocationPage />}

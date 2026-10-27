@@ -96,7 +96,18 @@ Traditional machine learning algorithms predict **correlation** ($\Pr(\text{Conv
 
 ## 🚀 Quickstart
 
-### 1. Frontend Setup (Interactive Dashboard)
+### ⚡ One-Click Start (Windows)
+Double-click `start.bat` or run:
+```bat
+start.bat
+```
+*This automatically activates your virtual environment, checks frontend dependencies, launches both FastAPI (`http://localhost:8000`) and Vite (`http://localhost:5173`) in dedicated consoles, and opens the app in your browser.*
+
+---
+
+### Manual Setup
+
+#### 1. Frontend Setup (Interactive Dashboard)
 ```bash
 # Navigate to frontend
 cd frontend
