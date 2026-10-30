@@ -1,12 +1,12 @@
-// Segment labels for the customer table.
+// Standardized segment labels for the customer table.
 // A customer is a Persuadable when the estimated effect (ITE) is above the threshold,
-// has a Negative effect when it is below minus the threshold, and No effect in between.
+// a Sleeping Dog when it is below minus the threshold, and a Sure Thing in between.
 
 import { toNumber } from './tableUtils.js';
 
-export const SEGMENT_LABELS = ['Persuadable', 'No effect', 'Negative effect'];
+export const SEGMENT_LABELS = ['Persuadables', 'Sure Things', 'Sleeping Dogs'];
 
-// Setting the person can change on the page. Agree the official value with the team.
+// Default threshold for considering lift significantly positive
 export const DEFAULT_THRESHOLD = 5;
 
 export function parseThreshold(text) {
@@ -18,16 +18,29 @@ export function labelSegment(ite, threshold = DEFAULT_THRESHOLD) {
   const value = toNumber(ite);
   const limit = Math.abs(toNumber(threshold));
   if (!Number.isFinite(value) || !Number.isFinite(limit)) return 'Unknown';
-  if (value > limit) return 'Persuadable';
-  if (value < -limit) return 'Negative effect';
-  return 'No effect';
+  if (value > limit) return 'Persuadables';
+  if (value < -limit) return 'Sleeping Dogs';
+  return 'Sure Things';
 }
 
 export function countSegments(rows, threshold = DEFAULT_THRESHOLD) {
-  const counts = { Persuadable: 0, 'No effect': 0, 'Negative effect': 0 };
+  const counts = {
+    Persuadables: 0,
+    'Sure Things': 0,
+    'Sleeping Dogs': 0,
+    // Aliases for backward compatibility
+    Persuadable: 0,
+    'No effect': 0,
+    'Negative effect': 0
+  };
   for (const row of rows) {
     const label = labelSegment(row.ite, threshold);
-    if (label in counts) counts[label] += 1;
+    if (label in counts) {
+      counts[label] += 1;
+      if (label === 'Persuadables') counts.Persuadable += 1;
+      if (label === 'Sure Things') counts['No effect'] += 1;
+      if (label === 'Sleeping Dogs') counts['Negative effect'] += 1;
+    }
   }
   return counts;
 }
