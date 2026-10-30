@@ -1,11 +1,13 @@
-// Separate entry point for the planning view, so it can be opened without editing App.jsx.
-// With the dev server running, open /planning.html.
+// Entry point for standalone planning view (/planning.html).
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import PlanningPanel from './components/PlanningPanel.jsx';
+import { DataProvider } from './context/DataContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <PlanningPanel />
+    <DataProvider>
+      <PlanningPanel />
+    </DataProvider>
   </StrictMode>,
 );

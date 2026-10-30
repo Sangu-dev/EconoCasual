@@ -3,18 +3,19 @@ import { useData } from '../context/useData';
 import UpliftChart from '../charts/UpliftChart';
 import IteHistogram from '../charts/IteHistogram';
 import IteScatterPlot from '../charts/IteScatterPlot';
-import { 
-  CheckCircle2, 
-  Filter, 
-  SlidersHorizontal 
+import { normalizeSegment } from '../constants/schema';
+import {
+  CheckCircle2,
+  Filter,
+  SlidersHorizontal
 } from 'lucide-react';
 
 export default function ChartsPage() {
-  const { 
-    summary, 
-    iteScores, 
-    upliftData, 
-    isLoading, 
+  const {
+    summary,
+    iteScores,
+    upliftData,
+    isLoading,
     filterSegment,
     setFilterSegment,
     filterMinLoyalty,
@@ -42,11 +43,12 @@ export default function ChartsPage() {
         if (!matchesId && !matchesSeg) return false;
       }
       if (filterSegment === 'all') return true;
+      const seg = normalizeSegment(row.segment);
+      if (seg === filterSegment) return true;
       const ite = Number(row.ite);
-      if (filterSegment === 'Persuadables') return ite > 10;
-      if (filterSegment === 'High-Value Loyal') return ite > 5 && ite <= 10;
-      if (filterSegment === 'Sure Things') return ite >= 0 && ite <= 5;
-      if (filterSegment === 'Sleeping Dogs') return ite < 0;
+      if (filterSegment === 'Persuadables') return ite > 5 || seg === 'Persuadables';
+      if (filterSegment === 'Sure Things') return (ite >= 0 && ite <= 5) || seg === 'Sure Things';
+      if (filterSegment === 'Sleeping Dogs') return ite < 0 || seg === 'Sleeping Dogs';
       return true;
     });
   }, [iteScores, filterSegment, filterMinLoyalty, searchQuery]);
@@ -97,7 +99,7 @@ export default function ChartsPage() {
             <button
               type="button"
               className="btn-pill btn-pill-primary"
-              onClick={loadPipelineMetrics}
+              onClick={() => loadPipelineMetrics()}
               disabled={isLoading}
               style={{ fontSize: '0.78rem', padding: '0.35rem 0.85rem' }}
             >
@@ -202,11 +204,11 @@ export default function ChartsPage() {
       </div>
 
       {/* Cohort Filter Toolbar */}
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'space-between', 
-        flexWrap: 'wrap', 
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
         gap: '0.75rem',
         padding: '0.65rem 1rem',
         backgroundColor: 'var(--bg-card)',
@@ -344,8 +346,8 @@ export default function ChartsPage() {
                   <td>
                     <div className="impact-bar-wrapper">
                       <div className="impact-bar-track">
-                        <div 
-                          className="impact-bar-fill" 
+                        <div
+                          className="impact-bar-fill"
                           style={{ width: `${row.impact * 100}%` }}
                         />
                       </div>

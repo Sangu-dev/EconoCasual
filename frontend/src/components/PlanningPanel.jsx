@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useContext } from 'react';
 import Papa from 'papaparse';
 import AllocationTable from './AllocationTable.jsx';
 import { BudgetProvider } from './BudgetContext.jsx';
@@ -11,6 +11,7 @@ import { formatCount, formatMoney } from './format.js';
 import { checkPlan, pickAllocationFile } from './planCheck.js';
 import { EMPTY_FILTERS, applyFilters } from './tableUtils.js';
 import { useBudget } from './useBudget.js';
+import { DataContext } from '../context/context';
 import './planning.css';
 
 const CUSTOMERS_URL = '/mock_ite.json';
@@ -86,20 +87,33 @@ function PlanCheck({ rows, settings, currency }) {
 }
 
 function PanelContent({ currency, currencySymbol }) {
+  const dataCtx = useContext(DataContext);
   const { settings } = useBudget();
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [thresholdText, setThresholdText] = useState('5');
 
-  const customers = useRemote(CUSTOMERS_URL, 'json');
-  const strategies = useRemote(STRATEGY_URL, 'csv');
+  const remoteCustomers = useRemote(CUSTOMERS_URL, 'json');
+  const remoteStrategies = useRemote(STRATEGY_URL, 'csv');
 
   const allocationFile = useMemo(
     () => pickAllocationFile(ALLOCATION_FILES, settings ? settings.totalBudget : NaN),
     [settings],
   );
-  const allocation = useRemote(allocationFile.url, 'csv');
+  const remoteAllocation = useRemote(allocationFile.url, 'csv');
 
-  const customerRows = customers.data;
+  // Seamlessly reuse live data from DataContext if available, otherwise fallback to remote files
+  const customerRows = (dataCtx?.iteScores && dataCtx.iteScores.length > 0)
+    ? dataCtx.iteScores
+    : remoteCustomers.data;
+
+  const allocationRows = (dataCtx?.allocationData && dataCtx.allocationData.length > 0)
+    ? dataCtx.allocationData
+    : (remoteAllocation.data ?? []);
+
+  const strategyRows = (dataCtx?.strategyData && dataCtx.strategyData.length > 0)
+    ? dataCtx.strategyData
+    : (remoteStrategies.data ?? []);
+
   const filteredCustomers = useMemo(
     () => (customerRows ? applyFilters(customerRows, filters) : []),
     [customerRows, filters],
@@ -114,33 +128,33 @@ function PanelContent({ currency, currencySymbol }) {
 
       <section>
         <h2>Plan summary</h2>
-        <Status resource={allocation} name="the allocation plan" />
-        <Status resource={strategies} name="the strategy comparison" />
+        {!dataCtx?.allocationData?.length && <Status resource={remoteAllocation} name="the allocation plan" />}
+        {!dataCtx?.strategyData?.length && <Status resource={remoteStrategies} name="the strategy comparison" />}
         <SummaryText
-          allocationRows={allocation.data ?? []}
-          strategyRows={strategies.data ?? []}
+          allocationRows={allocationRows}
+          strategyRows={strategyRows}
           currency={currency}
         />
       </section>
 
       <section>
         <h2>Plan check</h2>
-        <PlanCheck rows={allocation.data ?? []} settings={settings} currency={currency} />
+        <PlanCheck rows={allocationRows} settings={settings} currency={currency} />
       </section>
 
       <section>
         <h2>Allocation plan</h2>
         <p className="plan-caption">
           {allocationFile.budget === null
-            ? 'Showing the current plan file. Budget-specific plan files have not been added yet.'
+            ? 'Showing the active optimized allocation plan.'
             : `Showing the plan built for a budget of ${formatMoney(allocationFile.budget, currency)}.`}
         </p>
-        <AllocationTable rows={allocation.data ?? []} currency={currency} />
+        <AllocationTable rows={allocationRows} currency={currency} />
       </section>
 
       <section>
         <h2>Customers</h2>
-        <Status resource={customers} name="the customer scores" />
+        {!dataCtx?.iteScores?.length && <Status resource={remoteCustomers} name="the customer scores" />}
         <Filters filters={filters} onChange={setFilters} />
         <CustomerTable
           rows={filteredCustomers}

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useData } from '../context/useData';
-import { REQUIRED_COLUMNS, COLUMN_METADATA } from '../constants/schema';
+import { COLUMN_METADATA, REQUIRED_COLUMNS } from '../constants/schema';
 import { 
   CloudUpload, 
   AlertCircle, 
@@ -10,7 +10,8 @@ import {
   RotateCcw, 
   ArrowRight,
   Zap,
-  Table as TableIcon
+  Table as TableIcon,
+  Loader2
 } from 'lucide-react';
 import brandCrest from '../assets/logo-crest.png';
 
@@ -21,6 +22,7 @@ export default function UploadPage() {
     fileSize, 
     summary, 
     validationError, 
+    uploadSuccessMessage,
     isLoading, 
     parseCsvFile, 
     loadSampleData, 
@@ -62,9 +64,11 @@ export default function UploadPage() {
     }
   };
 
+  const activeColumnsToMap = summary?.expectedColumns || REQUIRED_COLUMNS;
+
   return (
     <div className="animate-fade-in">
-      {/* Import Modal / Card (Reference 2 style) */}
+      {/* Import Modal / Card */}
       <div className="import-modal-card">
         <div className="import-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -74,7 +78,7 @@ export default function UploadPage() {
             <div>
               <h2 className="import-title">Import Observational Customer Data</h2>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-                Upload your customer retail CSV to validate features against Double Machine Learning (DML) requirements.
+                Upload customer dataset to validate schema and execute genuine backend Double Machine Learning (DML).
               </p>
             </div>
           </div>
@@ -88,7 +92,7 @@ export default function UploadPage() {
               title="Load 1,000 retail records with valid schema"
             >
               <Sparkles size={13} color="var(--primary)" />
-              <span>Load 1k Sample</span>
+              <span>Load 1k Retail Sample</span>
             </button>
             <button
               type="button"
@@ -109,7 +113,7 @@ export default function UploadPage() {
               title="Test missing columns detection"
             >
               <FileWarning size={13} color="var(--rose)" />
-              <span>Test Error</span>
+              <span>Test Error Sample</span>
             </button>
             {dataset.length > 0 && (
               <button
@@ -136,7 +140,7 @@ export default function UploadPage() {
                 <div style={{ fontSize: '0.82rem', color: 'var(--rose-text)', marginTop: '0.2rem' }}>
                   {validationError}
                 </div>
-                {summary?.missingColumns && (
+                {summary?.missingColumns && summary.missingColumns.length > 0 && (
                   <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
                     {summary.missingColumns.map((col) => (
                       <span key={col} style={{ background: 'var(--bg-card)', color: 'var(--rose)', border: '1px solid var(--rose-border)', padding: '2px 8px', borderRadius: 'var(--radius-xs)', fontSize: '0.74rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
@@ -151,7 +155,7 @@ export default function UploadPage() {
         )}
 
         {/* Validation Success Banner */}
-        {summary?.isValid && (
+        {summary?.isValid && !validationError && (
           <div className="panel-card" style={{ borderColor: 'var(--emerald-border)', backgroundColor: 'var(--emerald-subtle)', marginBottom: '1.25rem', padding: '1rem 1.25rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
@@ -159,17 +163,22 @@ export default function UploadPage() {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--emerald-text)' }}>
-                      Schema Verified Successfully
+                      {uploadSuccessMessage ? 'Double ML Pipeline Executed Successfully' : 'Schema Verified Successfully'}
                     </span>
+                    {summary.schemaName && (
+                      <span className="status-badge status-badge-blue" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
+                        {summary.schemaLabel || summary.schemaName}
+                      </span>
+                    )}
                     {summary.totalRows >= 10000 && (
                       <span className="status-badge status-badge-green" style={{ fontSize: '0.68rem', padding: '2px 8px', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                         <Zap size={10} />
-                        Stage 3 Scale SLA Verified (10,000 Records • 60 FPS WebGL)
+                        Stage 3 Scale SLA (10,000 Records • WebGL)
                       </span>
                     )}
                   </div>
                   <div style={{ fontSize: '0.8rem', color: 'var(--emerald-text)', marginTop: '0.15rem' }}>
-                    All 7 required causal features identified. File <code>{fileName}</code> ({fileSize ? `${fileSize} • ` : ''}{summary.totalRows.toLocaleString()} rows) is ready.
+                    {uploadSuccessMessage || `All ${summary.expectedColumns?.length || 7} required features identified. File ${fileName} (${fileSize ? `${fileSize} • ` : ''}${summary.totalRows.toLocaleString()} rows) is ready.`}
                   </div>
                 </div>
               </div>
@@ -186,7 +195,7 @@ export default function UploadPage() {
           </div>
         )}
 
-        {/* Dropzone Box (Reference 2 style) */}
+        {/* Dropzone Box */}
         <div
           className={`upload-dropzone ${isDragOver ? 'dragover' : ''}`}
           onDragOver={handleDragOver}
@@ -202,19 +211,21 @@ export default function UploadPage() {
             onChange={handleFileInputChange}
           />
           <div className="upload-cloud-icon">
-            <CloudUpload size={24} />
+            {isLoading ? <Loader2 size={24} className="animate-spin" /> : <CloudUpload size={24} />}
           </div>
           <div className="upload-dropzone-title">
-            {isLoading ? 'Parsing and Validating CSV...' : 'Drag and drop files here or click to upload.'}
+            {isLoading ? 'Uploading & Fitting Backend Double ML Models...' : 'Drag and drop files here or click to upload.'}
           </div>
           <div className="upload-dropzone-subtitle">
-            {fileName ? `"${fileName}" is ready.` : 'Upload CSV files up to 50,000+ customer records.'}
+            {fileName ? `"${fileName}" selected.` : 'Supports Retail Observational and Kaggle Promotion CSV schemas up to 50,000+ records.'}
           </div>
         </div>
 
-        {/* Map Columns Section (Reference 2 style) */}
+        {/* Map Columns Section */}
         <div className="map-columns-section">
-          <div className="map-columns-title">Map Columns to Causal System Fields</div>
+          <div className="map-columns-title">
+            Map Columns to Causal System Fields {summary?.schemaLabel ? `(${summary.schemaLabel})` : ''}
+          </div>
           <div className="table-container">
             <table className="map-table">
               <thead>
@@ -225,7 +236,7 @@ export default function UploadPage() {
                 </tr>
               </thead>
               <tbody>
-                {REQUIRED_COLUMNS.map((col) => {
+                {activeColumnsToMap.map((col) => {
                   const isPresent = summary?.detectedColumns?.includes(col) ?? false;
                   const meta = COLUMN_METADATA[col] || { label: col, role: 'Causal Variable' };
                   return (
@@ -263,23 +274,23 @@ export default function UploadPage() {
         {/* Bottom Action Footer */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-            Strictly client-side parsing via PapaParse • No external transmission
+            Integrated Backend Inference • Powered by FastAPI, EconML & LightGBM
           </span>
 
-          {summary?.isValid && (
+          {summary?.isValid && !validationError && (
             <button
               type="button"
               className="btn-pill btn-pill-primary"
               onClick={() => setActiveTab('charts')}
             >
-              <span>Import {summary.totalRows.toLocaleString()} Records</span>
+              <span>Explore Model Results ({summary.totalRows.toLocaleString()} Records)</span>
               <ArrowRight size={14} />
             </button>
           )}
         </div>
       </div>
 
-      {/* 10-Row Data Preview Table (Reference 1 & 2) */}
+      {/* 10-Row Data Preview Table */}
       {summary?.isValid && (
         <div className="panel-card" style={{ maxWidth: 1100, margin: '0 auto 2rem' }}>
           <div className="panel-card-header">
@@ -322,7 +333,7 @@ export default function UploadPage() {
                           </td>
                         );
                       }
-                      if (col === 'revenue' || col === 'avg_order_value') {
+                      if (col === 'revenue' || col === 'avg_order_value' || col === 'history') {
                         return (
                           <td key={col} style={{ fontWeight: 600 }}>
                             ${typeof val === 'number' ? val.toFixed(2) : val}

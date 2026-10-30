@@ -5,6 +5,7 @@ import UploadPage from './pages/UploadPage';
 import ChartsPage from './pages/ChartsPage';
 import AllocationPage from './pages/AllocationPage';
 import AboutPage from './pages/AboutPage';
+import PlanningPanel from './components/PlanningPanel';
 import { 
   FileSpreadsheet, 
   LineChart, 
@@ -27,6 +28,7 @@ const NAV_ITEMS = [
   { id: 'upload', label: 'CSV Ingestion', icon: FileSpreadsheet, pageTitle: 'Data Ingestion & Column Mapping' },
   { id: 'charts', label: 'Model Evaluation', icon: LineChart, pageTitle: 'Causal ML Uplift & ITE Analytics' },
   { id: 'allocation', label: 'Budget Allocation', icon: PieChart, pageTitle: 'Optimal Resource & Discount Allocation' },
+  { id: 'planning', label: 'Policy Planning', icon: Target, pageTitle: 'Campaign Planning & Rule Compliance' },
   { id: 'about', label: 'Methodology & Guide', icon: HelpCircle, pageTitle: 'Scientific Principles & System Architecture' }
 ];
 
@@ -399,7 +401,7 @@ function DashboardContent() {
             <button
               type="button"
               className="btn-pill btn-pill-primary"
-              onClick={loadPipelineMetrics}
+              onClick={() => loadPipelineMetrics()}
               disabled={isLoading}
               title="Refresh models and metrics"
             >
@@ -414,6 +416,7 @@ function DashboardContent() {
           {activeTab === 'upload' && <UploadPage />}
           {activeTab === 'charts' && <ChartsPage />}
           {activeTab === 'allocation' && <AllocationPage />}
+          {activeTab === 'planning' && <PlanningPanel />}
           {activeTab === 'about' && <AboutPage />}
         </main>
       </div>
