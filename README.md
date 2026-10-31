@@ -1,189 +1,195 @@
-<div align="center">
+# EconoCausal
 
-# 📊 EconoCausal
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev/)
+[![EconML](https://img.shields.io/badge/EconML-Double__ML-268BEE?style=flat-square)](https://econml.azurewebsites.net/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-### Causal Uplift Modeling & Budget Optimization via Double Machine Learning
-
-[![React 19](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
-[![Plotly.js](https://img.shields.io/badge/Plotly.js-WebGL_Accelerated-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com/javascript/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-Backend_Ready-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![EconML](https://img.shields.io/badge/EconML-Double_ML-blue?style=for-the-badge)](https://econml.azurewebsites.net/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-
-<p align="center">
-  <b>An end-to-end causal decision framework that estimates Individual Treatment Effects (ITE) from observational customer data, isolates unconfounded promotional lift via Double Machine Learning (DML), evaluates causal uplift with Qini & AUUC metrics, and optimizes marketing budgets under resource constraints at 60 FPS GPU scale.</b>
-</p>
-
-[Quickstart](#-quickstart) •
-[Key Features](#-key-features) •
-[System Architecture](#-system-architecture) •
-[Documentation](#-documentation) •
-[Interface Gallery](docs/interface_showcase.md)
+> Causal Uplift Modeling & Marketing Budget Optimization via Double Machine Learning.
 
 ---
 
-</div>
+## Overview
 
-## 📌 What is EconoCausal?
+Traditional predictive machine learning targets high-propensity buyers based on correlation ($\Pr(\text{Conversion} \mid X)$). This often wastes promotional budgets on "Sure Things"—customers who would have made a purchase regardless of an incentive.
 
-Traditional machine learning algorithms predict **correlation** ($\Pr(\text{Conversion} \mid X)$), misallocating promotional budgets by subsidizing customers who would have purchased anyway.
-
-**EconoCausal** estimates the **true counterfactual lift** of promotional discounts using the **Neyman-Rubin Potential Outcomes Framework** and **Double Machine Learning (DML)**. It identifies who will purchase *because* of an incentive, segments customers into 4 causal archetypes (*Persuadables*, *Sure Things*, *Lost Causes*, *Sleeping Dogs*), and calculates ROI-maximizing budget allocation plans under financial constraints.
-
-| Dimension | Standard Predictive ML | EconoCausal Causal DML Framework |
-| :--- | :--- | :--- |
-| **Question Answered** | *"Who will buy?"* | *"Who will buy **because** of a discount?"* |
-| **Target Audience** | High-propensity buyers (*Sure Things*) | Incremental responders (*Persuadables*) |
-| **Capital Efficiency** | **Low:** Subsidizes organic purchases | **Maximal:** Spends exclusively where lift > 0 |
-| **Confounder Handling**| **Biased:** Confuses loyalty with discount lift | **Unconfounded:** Orthogonal residualization eliminates bias |
-| **Core Metric** | ROC-AUC, RMSE, Accuracy | **Qini Score, AUUC (Area Under Uplift Curve)** |
+**EconoCausal** applies the **Neyman-Rubin Potential Outcomes framework** and **Double Machine Learning (DML)** to estimate Individual Treatment Effects (ITE) from observational customer data. By isolating true incremental revenue lift through orthogonal residualization, the system identifies *Persuadables*, suppresses spend on non-responsive segments, and solves constraint-aware budget allocations to maximize promotional ROI.
 
 ---
 
-## ⚡ Key Features
+## Key Features
 
-- **🎯 Double Machine Learning Engine:** Unbiased Conditional Average Treatment Effect (CATE) estimation via Neyman-orthogonal residualization (Robinson's transformation).
-- **📈 Interactive Causal Evaluation Suite:** Uplift and Qini curves comparing Model vs. Oracle Ceiling vs. Random Baseline with normalized AUUC metrics.
-- **📊 60 FPS GPU WebGL Visualizations:** Renders **50,000+ customer records at 60 FPS** using Plotly WebGL (`scattergl`) with live Pearson correlation ($r$) and treatment heterogeneity histograms.
-- **💰 Constraint-Aware Budget Optimizer:** Non-linear optimization engine comparing **Blanket Targeting** vs. **Random Allocation** vs. **Causal DML Optimization** with paginated customer assignment tables.
-- **🛡️ Client-Side Ingestion & Validation:** Browser-native PapaParse streaming parser processing 50,000 rows in < 400 ms with strict 7-column causal schema validation.
-- **🔌 Offline-First Resilient Architecture:** Seamlessly toggles between live FastAPI REST endpoints and bundled local data contracts with zero UI crashes.
-- **🎨 Modern Enterprise SaaS UI:** Built with React 19, Vite, and custom CSS design tokens featuring full **Light & Dark Theme** support.
-
----
-
-## 🏗️ System Architecture
-
-```text
-┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│                                   EconoCausal Pipeline                                  │
-└────────────────────────────────────────────┬────────────────────────────────────────────┘
-                                             │
-                                             ▼
-┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│ 1. Data Ingestion & Schema Engine (Browser-Native)                                      │
-│    • Streaming PapaParse parser (50,000 rows in < 400 ms)                               │
-│    • Strict 7-column causal schema validation with diagnostic alert banners             │
-└────────────────────────────────────────────┬────────────────────────────────────────────┘
-                                             │
-                                             ▼
-┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│ 2. Causal Uplift Modeling (EconML / DoWhy)                                              │
-│    • Neyman-orthogonal residualization via Robinson's transformation (Double ML)        │
-│    • Estimates Individual Treatment Effects (ITE) and isolates true promotional lift    │
-│    • Computes cumulative Uplift & Qini coordinates with normalized AUUC metrics         │
-└────────────────────────────────────────────┬────────────────────────────────────────────┘
-                                             │
-                                             ▼
-┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│ 3. Constrained Budget Optimization (SciPy SLSQP)                                        │
-│    • Multi-scenario policy comparisons: Blanket vs Random vs Causal Optimization        │
-│    • Targets Persuadables; suppresses discounts for Sure Things and Lost Causes         │
-│    • Generates customer-level discount assignments under capital constraints            │
-└────────────────────────────────────────────┬────────────────────────────────────────────┘
-                                             │
-                                             ▼
-┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│ 4. Analytics Dashboard & API Layer (React 19 + Plotly WebGL)                            │
-│    • GPU-accelerated WebGL scatter plots rendering 50,000+ points at 60 FPS             │
-│    • Interactive ITE histograms, Uplift/Qini charts, and paginated allocation tables    │
-│    • Centralized API client with resilient offline mock fallback architecture           │
-└─────────────────────────────────────────────────────────────────────────────────────────┘
-```
+- **Double Machine Learning Engine:** Estimates unbiased Conditional Average Treatment Effects (CATE) using Robinson's transformation via EconML (`LinearDML`, `CausalForestDML`) and LightGBM nuisance models.
+- **Interactive Uplift & Qini Evaluation:** Evaluates model lift against Oracle and Random baselines with interactive Uplift and Qini curves and normalized AUUC metrics.
+- **GPU-Accelerated Visualizations:** Smoothly renders 50,000+ customer records at 60 FPS using Plotly WebGL (`scattergl`), alongside treatment heterogeneity histograms and Pearson correlation ($r$) analysis.
+- **Constrained Budget Optimizer:** Allocates marketing spend under resource constraints, directly comparing Causal Optimization against Blanket and Random allocation policies.
+- **Client-Side CSV Parsing & Validation:** In-browser streaming ingestion with PapaParse, supporting 50,000 rows in <400 ms with strict 7-column schema verification and diagnostic error reporting.
+- **Offline-First Resilience:** Centralized API client that automatically falls back to bundled local data contracts when the FastAPI backend is offline.
+- **Modern Responsive UI:** Built with React 19, Vite, and custom CSS design tokens featuring seamless Light and Dark mode switching.
 
 ---
 
-## 🚀 Quickstart
+## Tech Stack
 
-### ⚡ One-Click Start (Windows)
-Double-click `start.bat` or run:
-```bat
-start.bat
-```
-*This automatically activates your virtual environment, checks frontend dependencies, launches both FastAPI (`http://localhost:8000`) and Vite (`http://localhost:5173`) in dedicated consoles, and opens the app in your browser.*
-
----
-
-### Manual Setup
-
-#### 1. Frontend Setup (Interactive Dashboard)
-```bash
-# Navigate to frontend
-cd frontend
-
-# Install dependencies (React 19, Vite, Plotly, PapaParse, Lucide)
-npm install
-
-# Start development server
-npm run dev
-```
-Open **`http://localhost:5173/`** in your browser.  
-> *Tip: Click **"Load Sample Retail Data"** on the upload page to test the application instantly.*
-
-### 2. Backend Setup (Optional / Live API Mode)
-```bash
-# Create and activate virtual environment
-python -m venv venv
-# Windows:
-venv\Scripts\activate
-# macOS / Linux:
-source venv/bin/activate
-
-# Install dependencies and start FastAPI server
-pip install -r requirements.txt
-uvicorn backend.main:app --reload --port 8000
-```
-
----
-
-## 📚 Documentation
-
-Detailed documentation and technical deep dives are organized in the [`docs/`](docs/) directory:
-
-| Document | Description |
+| Layer | Technologies |
 | :--- | :--- |
-| 🖼️ [**Interface Showcase & Screenshots**](docs/interface_showcase.md) | High-resolution visual tour of all 4 primary panels: Ingestion, Causal Suite, Budget Allocation, and Guide. |
-| 🔬 [**Scientific Methodology & Theory**](docs/causal_methodology.md) | Neyman-Rubin model, Robinson's transformation, cross-fitting, and Qini evaluation mathematics. |
-| 📋 [**Data Contracts & Schemas**](docs/data_contracts.md) | Complete schema definitions, column constraints, and validation rules for all 5 pipeline datasets. |
-| 🔌 [**API Architecture & Contracts**](docs/api_architecture.md) | REST API endpoints specification, payload examples, and zero-crash offline fallback architecture. |
-| ⚡ [**Scale & Performance Benchmarks**](docs/performance_notes.md) | Empirical benchmarks (1k to 50k rows), WebGL GPU acceleration, and memory profiling. |
-| 💻 [**Frontend Setup & Operations**](docs/frontend_setup_sangamesh_ragam.md) | Comprehensive frontend development, build, test, and architecture documentation. |
-| 📖 [**Causal Terminology Glossary**](docs/glossary.md) | Plain-English definitions and real-world examples of causal inference and uplift terminology. |
+| **Backend & Causal Inference** | Python, FastAPI, Uvicorn, EconML, LightGBM, Scikit-learn, SciPy, Pandas, NumPy, DoWhy |
+| **Frontend & Visualization** | React 19, Vite, Plotly.js (`react-plotly.js`, WebGL `scattergl`), PapaParse, Lucide React |
+| **Testing & Tooling** | Pytest, HTTPX (`TestClient`), Oxlint |
 
 ---
 
-## 📂 Repository Structure
+## Project Structure
 
 ```text
 EconoCasual/
-├── data/                    # Standardized pipeline data contracts (CSV)
-├── docs/                    # System documentation, benchmarks & screenshots
-│   ├── screenshots/         # High-resolution UI captures of the 4 primary panels
-│   ├── interface_showcase.md# Visual interface gallery
-│   ├── causal_methodology.md# Mathematical & causal foundations
-│   ├── data_contracts.md    # Input/output schema contracts
-│   ├── api_architecture.md  # REST API specifications & fallback flow
-│   ├── performance_notes.md # 1k to 50k row scale benchmark results
-│   └── glossary.md          # Causal AI terminology definitions
-├── frontend/                # React 19 + Vite Web Application
-│   ├── public/              # Bundled mock contracts & test datasets
-│   └── src/
-│       ├── api/             # Centralized API client with fallback handling
-│       ├── charts/          # Plotly.js WebGL visualization suite
-│       ├── context/         # React DataContext global state store
-│       └── pages/           # Upload, Charts, Allocation & About views
-├── backend/                 # FastAPI backend services & endpoints
-├── src/                     # Core DML algorithms & optimization pipelines
-└── README.md                # Project manual & documentation hub
+├── backend/            # FastAPI service and API routes
+│   └── main.py         # Application entry point and REST endpoints
+├── src/                # Core causal inference & optimization modules
+│   ├── double_ml.py    # Double ML models (LinearDML, CausalForestDML)
+│   ├── optimizer_stub.py# Greedy budget allocation engine
+│   ├── pipeline.py     # End-to-end causal pipeline & schema validation
+│   └── prepare_data.py # Data transformation utilities
+├── frontend/           # React 19 + Vite web application
+│   ├── src/
+│   │   ├── api/        # Centralized API client with offline fallback
+│   │   ├── charts/     # Plotly WebGL visualizations (Uplift, ITE, Allocation)
+│   │   ├── context/    # Global DataContext state management
+│   │   └── pages/      # Ingestion, Charts, Allocation, and About views
+│   └── public/         # Bundled mock datasets and fallback contracts
+├── data/               # Input data contracts, ITE scores, and curve outputs
+├── docs/               # System documentation, contracts, and screenshots
+├── tests/              # Pytest backend and integration test suite
+├── requirements.txt    # Python dependencies
+└── start.bat           # One-click Windows runner for backend and frontend
 ```
 
 ---
 
-## 📜 License
+## Installation & Setup
 
-This project is open-source and distributed under the [MIT License](LICENSE).
+### Prerequisites
+- **Python:** 3.11 or higher
+- **Node.js:** 18 or higher (with `npm`)
 
-<div align="center">
-  <sub>Built with precision for causal decision-making • EconoCausal © 2026</sub>
-</div>
+### 1. Backend Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/sangamesh-ragam/EconoCasual.git
+cd EconoCasual
+
+# Create and activate a virtual environment
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+# macOS / Linux
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### 2. Frontend Setup
+
+```bash
+# Navigate to frontend and install packages
+cd frontend
+npm install
+cd ..
+```
+
+---
+
+## Running the Project
+
+### Option A: One-Click Startup (Windows)
+
+Execute the launcher script from the project root:
+
+```bat
+start.bat
+```
+
+*This automatically activates the virtual environment, verifies frontend dependencies, boots both FastAPI (`http://localhost:8000`) and Vite (`http://localhost:5173`) in dedicated windows, and opens your default browser.*
+
+### Option B: Manual Startup
+
+**1. Start Backend Server:**
+```bash
+# From the repository root (with virtual environment active)
+uvicorn backend.main:app --reload --port 8000
+```
+*API will run at `http://localhost:8000`.*
+
+**2. Start Frontend Server:**
+```bash
+cd frontend
+npm run dev
+```
+*Application interface will run at `http://localhost:5173`.*
+
+---
+
+## API Documentation
+
+When the backend service is running, interactive API documentation is accessible at:
+- **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+### Core Endpoints
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/health` | Check backend availability and ITE score readiness |
+| `POST` | `/api/upload` | Upload CSV dataset, validate schema, and trigger DML model fit |
+| `GET` | `/api/ite` | Retrieve computed ITE scores, features, and customer segments |
+| `GET` | `/api/uplift` | Fetch cumulative Uplift and Qini gain curve coordinates |
+| `POST` | `/optimize` | Calculate optimal discount allocation under budget constraints |
+| `GET` | `/api/allocation` | Retrieve customer-level discount allocation table |
+| `GET` | `/api/strategy-comparison` | Compare outcomes across Blanket, Random, and Causal strategies |
+
+---
+
+## Testing
+
+### Backend Tests
+Execute the unit and integration test suite with `pytest`:
+
+```bash
+pytest tests/
+```
+
+### Frontend Verification
+Verify frontend build integrity and linting:
+
+```bash
+cd frontend
+npm run lint
+npm run build
+```
+
+---
+
+## Future Improvements
+
+- **Continuous Treatment Modeling:** Support multi-level and continuous discount depths rather than binary treatment assignments.
+- **Multi-Arm Interventions:** Extend the causal pipeline to model multiple simultaneous promotion types (e.g., discounts vs. buy-one-get-one).
+- **Model Registry & Export:** Support serialization and export of fitted DML models for production batch scoring.
+
+---
+
+## Author
+
+**Sangamesh Ragam**
+- GitHub: [@sangamesh-ragam](https://github.com/sangamesh-ragam)
+- Role: Frontend & Machine Learning Engineer (Team Group 25)
+
+---
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
