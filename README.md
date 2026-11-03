@@ -182,14 +182,6 @@ npm run build
 
 ---
 
-## Author
-
-**Sangamesh Ragam**
-- GitHub: [@sangamesh-ragam](https://github.com/sangamesh-ragam)
-- Role: Frontend & Machine Learning Engineer (Team Group 25)
-
----
-
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
